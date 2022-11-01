@@ -9,13 +9,13 @@ const Header = () => {
     // if (pathname === "/login" || pathname === "/signup") {
     //     return null;
     // }
-    const ctx = useContext(AuthContext) as any;
+    const { currentUser, setCurrentUser } = useContext(AuthContext) as any;
 
-    const onSignOut = () => {
+    const onSignOut = async () => {
         const auth = getAuth();
         signOut(auth)
             .then(() => {
-                Router.push("/login");
+                setCurrentUser(null);
                 // Sign-out successful.
             })
             .catch((error) => {
@@ -60,7 +60,7 @@ const Header = () => {
                             <span className="ml-2">Tweet</span>
                         </a>
                     </li> */}
-                                {!ctx.currentUser && (
+                                {!currentUser && (
                                     <li className="nav-item cursor-pointer">
                                         <div className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75">
                                             <Link
@@ -77,13 +77,13 @@ const Header = () => {
                                         </div>
                                     </li>
                                 )}
-                                {ctx.currentUser && (
+                                {currentUser && (
                                     <>
                                         <li className="nav-item cursor-pointer">
                                             <div className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75">
                                                 <Link
                                                     className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
-                                                    href={`/profile/${ctx.currentUser.displayName}`}
+                                                    href={`/profile/${currentUser.displayName}`}
                                                 >
                                                     <>
                                                         <i className="fab fa-pinterest text-lg leading-lg text-white opacity-75"></i>
@@ -95,7 +95,7 @@ const Header = () => {
                                             </div>
                                         </li>
                                         <li className="nav-item">
-                                            <div className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75">
+                                            <div className="cursor-pointer px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75">
                                                 <a
                                                     onMouseUp={onSignOut}
                                                     className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"

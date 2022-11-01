@@ -22,14 +22,16 @@ const handleSignUp = async (event: {
     const { email, password } = event.target.elements;
     try {
         const auth = getAuth(app);
-        setPersistence(auth, browserSessionPersistence).then(() => {
-            return signInWithEmailAndPassword(
-                auth,
-                email.value,
-                password.value
-            );
-        });
-        Router.push("/");
+        setPersistence(auth, browserSessionPersistence)
+            .then(() => {
+                return signInWithEmailAndPassword(
+                    auth,
+                    email.value,
+                    password.value
+                );
+            })
+            .then(() => Router.push("/"));
+        // Router.push("/");
     } catch (error) {
         console.log(error);
     }

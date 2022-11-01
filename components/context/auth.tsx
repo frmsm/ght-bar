@@ -41,6 +41,7 @@ export const AuthProvider: React.FC<any> = ({ children }) => {
         <AuthContext.Provider
             value={{
                 currentUser,
+                setCurrentUser,
             }}
         >
             {children}
