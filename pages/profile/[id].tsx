@@ -18,7 +18,7 @@ const Profile: NextPage = () => {
             onValue(dataRef, (snapshot) => {
                 try {
                     const user = snapshot.val();
-                    console.log(user);
+
                     setUser(user);
                 } catch {
                     alert("no user");

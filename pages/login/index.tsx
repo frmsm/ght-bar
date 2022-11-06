@@ -33,7 +33,7 @@ const handleSignUp = async (event: {
             .then(() => Router.push("/"));
         // Router.push("/");
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 };
 

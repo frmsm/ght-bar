@@ -1,8 +1,21 @@
 import React from "react";
 import Image from "next/image";
 import Whiskey from "components/svg/whiskey.svg";
+import { NextPage } from "next";
+import type { Item } from "pages";
+import dayjs from "dayjs";
+import Link from "next/link";
+import getUnicodeFlagIcon from "country-flag-icons/unicode";
 
-const Card = () => {
+const Card: NextPage<Item> = ({
+    image,
+    name,
+    notes,
+    strength,
+    user,
+    countryOrigin,
+    createdAt,
+}) => {
     return (
         <div
             style={{ minWidth: "296px" }}
@@ -58,15 +71,51 @@ const Card = () => {
                     </ul>
                 </div>
             </div>
-            <div className="flex flex-col items-center pb-10">
-                <Whiskey className="w-20" />
+            <div className="flex flex-col items-center pb-10 gap-2">
+                {/* <Whiskey className="w-20" /> */}
+                <div className="text-sm text-gray-500 dark:text-gray-400">
+                    {dayjs(createdAt).format("DD.MM.YYYY")}
+                </div>
+                <div>
+                    {image ? (
+                        <Image
+                            // loader={imgLoader}
+                            src={`http://ght.bar/static/images/${image}`}
+                            alt={name}
+                            width={200}
+                            height={200}
+                            // loading="lazy"
+                            quality={30}
+                            placeholder="empty"
+                            className="rounded-lg shadow-lg"
+                            // layout="responsive"
+                            // priority={false}
+                        />
+                    ) : (
+                        <Whiskey className="w-20" />
+                    )}
+                </div>
                 <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
-                    Bonnie Green
+                    {name}
                 </h5>
-                <span className="text-sm text-gray-500 dark:text-gray-400">
-                    Visual Designer
-                </span>
-                <div className="flex mt-4 space-x-3 md:mt-6">
+                <ul className="flex flex-col items-center pb-10">
+                    <li className="text-sm text-gray-500 dark:text-gray-400">
+                        {strength} %
+                    </li>
+
+                    <li className="text-sm text-gray-500 dark:text-gray-400">
+                        <Link href={`/?country=${countryOrigin}`}>
+                            {countryOrigin} {getUnicodeFlagIcon(countryOrigin)}
+                        </Link>
+                    </li>
+                    <li className="text-sm text-gray-500 dark:text-gray-400">
+                        {user}
+                    </li>
+                    <li className="text-sm text-gray-500 dark:text-gray-400">
+                        {notes}
+                    </li>
+                </ul>
+                {/* <div className="flex mt-4 space-x-3 md:mt-6">
                     <a
                         href="#"
                         className="inline-flex items-center py-2 px-4 text-sm font-medium text-center text-white bg-emerald-700 rounded-lg hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800"
@@ -79,7 +128,7 @@ const Card = () => {
                     >
                         Message
                     </a>
-                </div>
+                </div> */}
             </div>
         </div>
     );
