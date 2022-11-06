@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import Spinner from "components/spinner";
-import { usePageEnter } from "hooks/use-page-enter";
-import { getAuth, signOut } from "firebase/auth";
+
 import { AuthProvider } from "components/context/auth";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import Router from "next/router";
+// import { getAnalytics } from "firebase/analytics";
+
 import Header from "components/header";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -32,12 +30,6 @@ export const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 
 function MyApp({ Component, pageProps }: AppProps) {
-    // const isLoading = usePageEnter();
-
-    // if (isLoading) {
-    //     return <Spinner />;
-    // }
-
     return (
         <AuthProvider>
             <div className="flex flex-col min-h-full">

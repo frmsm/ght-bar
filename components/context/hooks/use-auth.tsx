@@ -35,10 +35,9 @@ export const useAuth = () => {
 
         Router.events.on("routeChangeComplete", handlePageChangeComplete);
 
-        return Router.events.off(
-            "routeChangeComplete",
-            handlePageChangeComplete
-        );
+        return () => {
+            Router.events.off("routeChangeComplete", handlePageChangeComplete);
+        };
     }, []);
 
     return { currentUser, setCurrentUser, pending };
