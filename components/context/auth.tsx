@@ -12,25 +12,24 @@ export const AuthProvider: React.FC<any> = ({ children }) => {
     const [pending, setPending] = useState(true);
 
     useEffect(() => {
-        const auth = getAuth(app);
-        //@ts-ignore
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                //@ts-ignore
-                setCurrentUser(user);
-            } else {
-                const pathname = Router.pathname.toLowerCase();
-                if (pathname === "/login" || pathname === "/signup") {
-                    setPending(false);
+        (async () => {
+            const auth = getAuth(app);
+            //@ts-ignore
+            await onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    //@ts-ignore
+                    setCurrentUser(user);
                 } else {
-                    Router.push("/login");
+                    const pathname = Router.pathname.toLowerCase();
+                    if (pathname === "/login" || pathname === "/signup") {
+                    } else {
+                        Router.replace("/login");
+                    }
                 }
-            }
+            });
 
-            setTimeout(() => {
-                setPending(false);
-            }, 100);
-        });
+            setPending(false);
+        })();
     }, []);
 
     if (pending) {
@@ -48,3 +47,26 @@ export const AuthProvider: React.FC<any> = ({ children }) => {
         </AuthContext.Provider>
     );
 };
+
+// function Loading() {
+//     const router = useRouter();
+
+//     const [loading, setLoading] = useState(false);
+
+//     useEffect(() => {
+//         const handleStart = (url) => (url !== router.asPath) && setLoading(true);
+//         const handleComplete = (url) => (url === router.asPath) && setLoading(false);
+
+//         router.events.on('routeChangeStart', handleStart)
+//         router.events.on('routeChangeComplete', handleComplete)
+//         router.events.on('routeChangeError', handleComplete)
+
+//         return () => {
+//             router.events.off('routeChangeStart', handleStart)
+//             router.events.off('routeChangeComplete', handleComplete)
+//             router.events.off('routeChangeError', handleComplete)
+//         }
+//     })
+
+//     return loading && (<div>Loading....{/*I have an animation here*/}</div>);
+// }
