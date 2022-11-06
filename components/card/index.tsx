@@ -84,7 +84,7 @@ const Card: NextPage<Item> = ({
                             alt={name}
                             width={200}
                             height={200}
-                            // loading="lazy"
+                            loading="lazy"
                             quality={30}
                             placeholder="empty"
                             className="rounded-lg shadow-lg"
@@ -100,7 +100,9 @@ const Card: NextPage<Item> = ({
                 </h5>
                 <ul className="flex flex-col items-center pb-10">
                     <li className="text-sm text-gray-500 dark:text-gray-400">
-                        {strength} %
+                        <Link href={`/?strength=${strength}`}>
+                            {strength} %
+                        </Link>
                     </li>
 
                     <li className="text-sm text-gray-500 dark:text-gray-400">
@@ -109,7 +111,7 @@ const Card: NextPage<Item> = ({
                         </Link>
                     </li>
                     <li className="text-sm text-gray-500 dark:text-gray-400">
-                        {user}
+                        <Link href={`/?user=${user}`}>{user}</Link>
                     </li>
                     <li className="text-sm text-gray-500 dark:text-gray-400">
                         {notes}

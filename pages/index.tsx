@@ -25,25 +25,7 @@ export type Item = {
     user: string;
 };
 
-const Home: NextPage<{ bottles: Item[]; ctx: any }> = ({
-    bottles = [],
-    ctx,
-}) => {
-    // console.log("props ***", ctx);
-    // useEffect(() => {
-    //     (async () => {
-    //         try {
-    //             const result = await executeQuery({
-    //                 query: "SELECT * FROM users",
-    //                 values: [],
-    //             });
-
-    //             console.log(result);
-    //         } catch (error) {
-    //             console.log("sql connect error", error);
-    //         }
-    //     })();
-    // }, []);
+const Home: NextPage<{ bottles: Item[] }> = ({ bottles = [] }) => {
     return (
         <div className={styles.container}>
             <Head>
@@ -89,15 +71,35 @@ const getQuery = (query: GetServerSidePropsContext["query"]) => {
         return queryGetByCountry(query.country);
     }
 
+    if (query.user) {
+        return queryGetByUsername(query.user);
+    }
+
+    if (query.strength) {
+        return queryGetByStrength(query.strength);
+    }
+
     return queryGetAll();
 };
 
+const itemsSelect = "SELECT * FROM ght_bar.items";
+
 const queryGetAll = () => ({
-    query: "SELECT * FROM ght_bar.items",
+    query: itemsSelect,
     values: [],
 });
 
-const queryGetByCountry = (country: string | any) => ({
-    query: `SELECT * FROM ght_bar.items where countryOrigin = '${country}';`,
+const queryGetByCountry = (value: string | any) => ({
+    query: `${itemsSelect} where countryOrigin = '${value}';`,
+    values: [],
+});
+
+const queryGetByUsername = (value: string | any) => ({
+    query: `${itemsSelect} where user = '${value}';`,
+    values: [],
+});
+
+const queryGetByStrength = (value: string | any) => ({
+    query: `${itemsSelect} where strength = '${value}';`,
     values: [],
 });
