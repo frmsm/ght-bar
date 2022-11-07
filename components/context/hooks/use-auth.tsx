@@ -20,25 +20,28 @@ export const useAuth = () => {
             } else {
                 const pathname = Router.pathname.toLowerCase();
                 if (pathname === "/login" || pathname === "/signup") {
-                    setPending(false);
+                    // setPending(false);
                 } else {
                     Router.push("/login");
                 }
             }
         });
-
+        setPending(false);
         return unsubscribe;
     }, []);
 
-    useEffect(() => {
-        const handlePageChangeComplete = () => setPending(false);
+    // useEffect(() => {
+    //     const handlePageChangeComplete = () => setPending(false);
+    //     const handlePageChangeStart = () => setPending(true);
 
-        Router.events.on("routeChangeComplete", handlePageChangeComplete);
+    //     Router.events.on("routeChangeStart", handlePageChangeStart);
+    //     Router.events.on("routeChangeComplete", handlePageChangeComplete);
 
-        return () => {
-            Router.events.off("routeChangeComplete", handlePageChangeComplete);
-        };
-    }, []);
+    //     return () => {
+    //         Router.events.off("routeChangeStart", handlePageChangeStart);
+    //         Router.events.off("routeChangeComplete", handlePageChangeComplete);
+    //     };
+    // }, []);
 
     return { currentUser, setCurrentUser, pending };
 };

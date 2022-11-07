@@ -87,7 +87,7 @@ const Card: NextPage<Item> = ({
                             loading="lazy"
                             quality={30}
                             placeholder="empty"
-                            className="rounded-lg shadow-lg"
+                            className="rounded-full shadow-lg"
                             // layout="responsive"
                             // priority={false}
                         />
