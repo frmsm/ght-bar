@@ -77,7 +77,7 @@ const Card: NextPage<Item> = ({
                     {dayjs(createdAt).format("DD.MM.YYYY")}
                 </div>
                 <div>
-                    {image ? (
+                    {/* {image ? (
                         <Image
                             // loader={imgLoader}
                             src={`http://ght.bar/static/images/${image}`}
@@ -87,13 +87,14 @@ const Card: NextPage<Item> = ({
                             loading="lazy"
                             quality={30}
                             placeholder="empty"
-                            className="rounded-full shadow-lg"
+                            className="rounded-full shadow-lg brightness-110"
                             // layout="responsive"
                             // priority={false}
                         />
                     ) : (
                         <Whiskey className="w-20" />
-                    )}
+                    )} */}
+                    {image && <Whiskey className="w-20" />}
                 </div>
                 <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
                     {name}

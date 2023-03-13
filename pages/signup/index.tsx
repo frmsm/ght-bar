@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import type { NextPage } from "next";
+import type { NextPage, InferGetServerSidePropsType } from "next";
 import { app } from "pages/_app";
 import {
     getAuth,
@@ -33,7 +33,9 @@ const writeUserData = ({
     });
 };
 
-const SignUp: NextPage = () => {
+const SignUp: NextPage = (
+    props: InferGetServerSidePropsType<typeof getServerSideProps>
+) => {
     const handleSignUp = async (event: {
         preventDefault: () => void;
         target: {
@@ -98,7 +100,9 @@ const SignUp: NextPage = () => {
                 <form
                     className="mt-8 space-y-6"
                     //@ts-ignore
-                    onSubmit={handleSignUp}
+                    // onSubmit={handleSignUp}
+                    action="/api/signup"
+                    method="post"
                 >
                     <input type="hidden" name="remember" value="true" />
                     <div className="-space-y-px rounded-md shadow-sm">
@@ -163,3 +167,11 @@ const SignUp: NextPage = () => {
 };
 
 export default SignUp;
+
+export async function getServerSideProps(context: any) {
+    console.log("gssp", { context });
+
+    return {
+        props: {},
+    };
+}

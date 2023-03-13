@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import type { NextPage } from "next";
+import type { NextPage, InferGetServerSidePropsType } from "next";
 import Router from "next/router";
 import Head from "next/head";
 import Image from "next/image";
@@ -11,6 +11,7 @@ import {
     browserSessionPersistence,
 } from "firebase/auth";
 import { app } from "pages/_app";
+import { getCsrfToken } from "next-auth/react";
 
 import Whiskey from "components/svg/whiskey.svg";
 
@@ -37,7 +38,15 @@ const handleSignUp = async (event: {
     }
 };
 
-const Login: NextPage = () => {
+export async function getServerSideProps(context) {
+    return {
+        props: {
+            csrfToken: await getCsrfToken(context),
+        },
+    };
+}
+
+const Login: NextPage = ({ csrfToken }) => {
     return (
         <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
             <div className="w-full max-w-md space-y-8">
@@ -51,14 +60,19 @@ const Login: NextPage = () => {
                 </div>
                 <form
                     className="mt-8 space-y-6"
-                    // action="#"
-                    // method="POST"
+                    action="/api/auth/callback/credentials"
+                    method="POST"
                     //@ts-ignore
-                    onSubmit={handleSignUp}
+                    // onSubmit={handleSignUp}
                 >
+                    <input
+                        name="csrfToken"
+                        type="hidden"
+                        defaultValue={csrfToken}
+                    />
                     <input type="hidden" name="remember" value="true" />
                     <div className="-space-y-px rounded-md shadow-sm">
-                        <div>
+                        {/* <div>
                             <label htmlFor="email-address" className="sr-only">
                                 Email address
                             </label>
@@ -70,6 +84,20 @@ const Login: NextPage = () => {
                                 required
                                 className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-emerald-500 focus:outline-none focus:ring-emerald-500 sm:text-sm"
                                 placeholder="Email"
+                            />
+                        </div> */}
+                        <div>
+                            <label htmlFor="email-address" className="sr-only">
+                                username
+                            </label>
+                            <input
+                                id="username"
+                                name="username"
+                                type="usernamel"
+                                autoComplete="username"
+                                required
+                                className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-emerald-500 focus:outline-none focus:ring-emerald-500 sm:text-sm"
+                                placeholder="username"
                             />
                         </div>
                         <div>

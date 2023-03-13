@@ -1,15 +1,19 @@
-import type { NextPage } from "next";
+import type { NextPage, InferGetServerSidePropsType } from "next";
+import React, { useContext, useState } from "react";
 import Head from "next/head";
-import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import Link from "next/link";
 import Card from "components/card";
-import { getAuth, signOut } from "firebase/auth";
-
+import { AuthContext } from "components/context/auth";
 import { GetServerSidePropsContext } from "next";
+// import { PrismaClient } from "@prisma/client";
+// const prisma = new PrismaClient();
 
-import { useEffect } from "react";
+import { prisma } from "./api/auth/[...nextauth]";
+import Input from "components/input";
 import executeQuery from "lib/db";
+import Router from "next/router";
+import { useSession, signIn, signOut } from "next-auth/react";
+import Form from "components/filter-form";
 
 export type Item = {
     code_iso: string;
@@ -19,13 +23,17 @@ export type Item = {
     image: string;
     name: string;
     notes: null | string;
-    strength: number;
+    strength: number | string;
     type: string; // перевести в типы whiskey rome  итд
     updatedAt: string; //date
     user: string;
 };
 
-const Home: NextPage<{ bottles: Item[] }> = ({ bottles = [] }) => {
+const Home: NextPage<{ bottles: Item[] }> = ({
+        bottles = [],
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    const [data, setData] = useState(bottles);
+
     return (
         <div className={styles.container}>
             <Head>
@@ -36,9 +44,10 @@ const Home: NextPage<{ bottles: Item[] }> = ({ bottles = [] }) => {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
+            <Form setData={setData} />
             <div className="p-8">
                 <div className="flex flex-wrap gap-8 justify-center">
-                    {bottles.map((bottle: Item) => {
+                    {data?.map((bottle: Item) => {
                         return <Card key={bottle.id.toString()} {...bottle} />;
                     })}
                 </div>
@@ -50,11 +59,33 @@ const Home: NextPage<{ bottles: Item[] }> = ({ bottles = [] }) => {
 export default Home;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
+    // const allUsers = await prisma.users.findMany();
+    // console.log(allUsers);
+
     let bottles = {};
-    const query = context.query;
+
+    let o = Object.fromEntries(
+        Object.entries(context.query).filter(([_, v]) => v)
+    );
+
+    if (o.strength) {
+        //@ts-ignore
+        o.strength = Number(o.strength);
+    }
 
     try {
-        const result = await executeQuery(getQuery(query));
+        // const result = await executeQuery(getQuery(query));
+
+        // bottles = JSON.parse(JSON.stringify(result));
+        const result = await prisma.items.findMany({
+            where: {
+                ...o,
+                name: {
+                    //@ts-ignore
+                    contains: o?.name ?? "",
+                },
+            },
+        });
 
         bottles = JSON.parse(JSON.stringify(result));
     } catch (error) {

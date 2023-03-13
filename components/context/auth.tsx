@@ -7,7 +7,7 @@ export const AuthContext = React.createContext({});
 
 export const AuthProvider: React.FC<any> = ({ children }) => {
     const { currentUser, setCurrentUser, pending } = useAuth();
-
+    console.log("auth **********");
     if (pending) {
         return <Spinner />;
     }
@@ -23,3 +23,13 @@ export const AuthProvider: React.FC<any> = ({ children }) => {
         </AuthContext.Provider>
     );
 };
+
+// export const AuthProvider: React.FC<any> = ({ children }) => {
+//     const { pending } = useAuth();
+
+//     if (pending) {
+//         return <Spinner />;
+//     }
+
+//     return <div>{children}</div>;
+// };
