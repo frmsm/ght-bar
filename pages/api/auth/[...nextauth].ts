@@ -7,7 +7,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaClient } from "@prisma/client";
 export const prisma = new PrismaClient();
 
-export default NextAuth({
+export const authOptions = {
     // adapter: PrismaAdapter(prisma),
     providers: [
         CredentialsProvider({
@@ -15,7 +15,7 @@ export default NextAuth({
             authorize: async (credentials, req) => {
                 const username = credentials?.username ?? "";
                 const password = credentials?.password ?? "";
-                console.log("loggedOn");
+
                 let isLoggedIn = false;
                 let user = null;
                 if (username && password) {
@@ -64,5 +64,8 @@ export default NextAuth({
 
     pages: {
         signIn: "/login", //Need to define custom login page (if using)
+        admin: "/admin",
     },
-});
+};
+
+export default NextAuth(authOptions);
