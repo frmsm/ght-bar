@@ -2,6 +2,7 @@ import { prisma } from "./auth/[...nextauth]";
 
 import formidable from "formidable";
 import fs from "fs";
+import { IncomingMessage } from "http";
 import path from "path";
 
 export const config = {
@@ -10,7 +11,16 @@ export const config = {
     },
 };
 
-export default async function handler(req, res) {
+export default async function handler(
+    req: IncomingMessage,
+    res: {
+        status: (arg0: number) => {
+            (): any;
+            new (): any;
+            json: { (arg0: { message?: string }): any; new (): any };
+        };
+    }
+) {
     // const data = await JSON.parse(req.body);
     console.log(req.body);
     // const uploadDir = path.resolve(__dirname, "../../img");

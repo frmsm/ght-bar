@@ -1,19 +1,16 @@
+import React, { useState } from "react";
 import type { NextPage, InferGetServerSidePropsType } from "next";
-import React, { useContext, useState } from "react";
-import Head from "next/head";
-import styles from "../styles/Home.module.css";
-import Card from "components/card";
-import { AuthContext } from "components/context/auth";
 import { GetServerSidePropsContext } from "next";
-// import { PrismaClient } from "@prisma/client";
-// const prisma = new PrismaClient();
+import Head from "next/head";
+import { useSession, signIn, signOut } from "next-auth/react";
+import Router from "next/router";
+
+import Card from "components/card";
+import Form from "components/filter-form";
+
+import styles from "../styles/Home.module.css";
 
 import { prisma } from "./api/auth/[...nextauth]";
-import Input from "components/input";
-import executeQuery from "lib/db";
-import Router from "next/router";
-import { useSession, signIn, signOut } from "next-auth/react";
-import Form from "components/filter-form";
 
 export type Item = {
     code_iso: string;
@@ -30,9 +27,16 @@ export type Item = {
 };
 
 const Home: NextPage<{ bottles: Item[] }> = ({
-        bottles = [],
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    bottles = [],
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    const { data: session, ...rest } = useSession();
     const [data, setData] = useState(bottles);
+    console.log({ rest });
+    //@ts-ignore
+    if (!session) {
+        Router.push("/login");
+        return;
+    }
 
     return (
         <div className={styles.container}>
@@ -59,9 +63,6 @@ const Home: NextPage<{ bottles: Item[] }> = ({
 export default Home;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-    // const allUsers = await prisma.users.findMany();
-    // console.log(allUsers);
-
     let bottles = {};
 
     let o = Object.fromEntries(
@@ -74,9 +75,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     }
 
     try {
-        // const result = await executeQuery(getQuery(query));
-
-        // bottles = JSON.parse(JSON.stringify(result));
         const result = await prisma.items.findMany({
             where: {
                 ...o,
@@ -96,41 +94,3 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         props: { bottles }, // will be passed to the page component as props
     };
 }
-
-const getQuery = (query: GetServerSidePropsContext["query"]) => {
-    if (query.country) {
-        return queryGetByCountry(query.country);
-    }
-
-    if (query.user) {
-        return queryGetByUsername(query.user);
-    }
-
-    if (query.strength) {
-        return queryGetByStrength(query.strength);
-    }
-
-    return queryGetAll();
-};
-
-const itemsSelect = "SELECT * FROM ght_bar.items";
-
-const queryGetAll = () => ({
-    query: itemsSelect,
-    values: [],
-});
-
-const queryGetByCountry = (value: string | any) => ({
-    query: `${itemsSelect} where countryOrigin = '${value}';`,
-    values: [],
-});
-
-const queryGetByUsername = (value: string | any) => ({
-    query: `${itemsSelect} where user = '${value}';`,
-    values: [],
-});
-
-const queryGetByStrength = (value: string | any) => ({
-    query: `${itemsSelect} where strength = '${value}';`,
-    values: [],
-});

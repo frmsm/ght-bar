@@ -1,24 +1,12 @@
 import React, { useContext } from "react";
 import Router from "next/router";
-// import { getAuth, signOut } from "firebase/auth";\
 import { useSession, signIn, signOut } from "next-auth/react";
 import Link from "next/link";
+
 import { NextAuthContext } from "components/context/next-auth";
 
 const Header = () => {
-    // const { currentUser, setCurrentUser } = useContext(AuthContext) as any;
-
-    // const onSignOut = async () => {
-    //     const auth = getAuth();
-    //     try {
-    //         await signOut(auth);
-    //         setCurrentUser(null);
-    //         Router.reload();
-    //     } catch (e) {}
-    // };
-
     const onSignOut = async () => {
-        // const auth = getAuth();
         try {
             await signOut();
 

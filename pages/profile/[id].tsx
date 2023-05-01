@@ -1,36 +1,11 @@
 import React, { useContext } from "react";
 import type { NextPage, InferGetServerSidePropsType } from "next";
-import { getDatabase, ref, set, onValue } from "firebase/database";
-import { useEffect } from "react";
-import { useState } from "react";
-import { AuthContext } from "components/context/auth";
 import { GetServerSidePropsContext } from "next";
 import { prisma } from "pages/api/auth/[...nextauth]";
 
 const Profile: NextPage<{ user: any }> = ({
-        user,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    // const [user, setUser] = useState<any>({});
-    // const ctx = useContext(AuthContext) as any;
-    // const uid = ctx.currentUser.displayName;
-
-    // const db = getDatabase();
-
-    // useEffect(() => {
-    //     (async () => {
-    //         const dataRef = ref(db, `users/${uid}`);
-    //         onValue(dataRef, (snapshot) => {
-    //             try {
-    //                 const user = snapshot.val();
-
-    //                 setUser(user);
-    //             } catch {
-    //                 alert("no user");
-    //             }
-    //         });
-    //     })();
-    // }, [db, uid]);
-
+    user,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     return <div>{JSON.stringify(user)}</div>;
 };
 

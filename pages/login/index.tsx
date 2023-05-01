@@ -1,52 +1,13 @@
-import React, { useCallback } from "react";
+import React from "react";
 import type { NextPage, InferGetServerSidePropsType } from "next";
-import Router from "next/router";
-import Head from "next/head";
-import Image from "next/image";
-import styles from "./styles.module.css";
-import {
-    getAuth,
-    setPersistence,
-    signInWithEmailAndPassword,
-    browserSessionPersistence,
-} from "firebase/auth";
-import { app } from "pages/_app";
+
 import { getCsrfToken } from "next-auth/react";
 
 import Whiskey from "components/svg/whiskey.svg";
 
-const handleSignUp = async (event: {
-    preventDefault: () => void;
-    target: { elements: { email: any; password: any } };
-}) => {
-    event.preventDefault();
-    const { email, password } = event.target.elements;
-    try {
-        const auth = getAuth(app);
-        setPersistence(auth, browserSessionPersistence)
-            .then(() => {
-                return signInWithEmailAndPassword(
-                    auth,
-                    email.value,
-                    password.value
-                );
-            })
-            .then(() => Router.push("/"));
-        // Router.push("/");
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-export async function getServerSideProps(context) {
-    return {
-        props: {
-            csrfToken: await getCsrfToken(context),
-        },
-    };
-}
-
-const Login: NextPage = ({ csrfToken }) => {
+const Login: NextPage = ({
+    csrfToken,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     return (
         <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
             <div className="w-full max-w-md space-y-8">
@@ -172,3 +133,11 @@ const Login: NextPage = ({ csrfToken }) => {
 };
 
 export default Login;
+
+export async function getServerSideProps(context) {
+    return {
+        props: {
+            csrfToken: await getCsrfToken(context),
+        },
+    };
+}

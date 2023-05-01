@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Whiskey from "components/svg/whiskey.svg";
 import { NextPage } from "next";
@@ -6,6 +6,7 @@ import type { Item } from "pages";
 import dayjs from "dayjs";
 import Link from "next/link";
 import getUnicodeFlagIcon from "country-flag-icons/unicode";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const Card: NextPage<Item> = ({
     image,
@@ -15,16 +16,24 @@ const Card: NextPage<Item> = ({
     user,
     countryOrigin,
     createdAt,
+    id,
 }) => {
+    const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
+    const toggleSettings = () => setIsSettingsOpen((prev) => !prev);
+    const { data: session } = useSession();
+
+    const [isError, setIsError] = useState(false);
+
     return (
         <div
             style={{ minWidth: "296px" }}
-            className="w-full max-w-sm min-w-fit bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700"
+            className="w-full relative max-w-sm min-w-fit bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700"
         >
             <div className="flex justify-end px-4 pt-4">
                 <button
                     id="dropdownButton"
                     data-dropdown-toggle="dropdown"
+                    onMouseDown={toggleSettings}
                     className="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5"
                     type="button"
                 >
@@ -39,63 +48,68 @@ const Card: NextPage<Item> = ({
                         <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path>
                     </svg>
                 </button>
-                <div
-                    id="dropdown"
-                    className="hidden z-10 w-44 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700"
-                >
-                    <ul className="py-1" aria-labelledby="dropdownButton">
-                        <li>
-                            <a
-                                href="#"
-                                className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                            >
-                                Edit
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                            >
-                                Export Data
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                className="block py-2 px-4 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                            >
-                                Delete
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                {session && !session?.user?.isAdmin && (
+                    <div
+                        id="dropdown"
+                        className={`${
+                            !isSettingsOpen ? "hidden" : ""
+                        } absolute right-16 z-10 w-44 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700`}
+                    >
+                        <ul className="py-1" aria-labelledby="dropdownButton">
+                            <li>
+                                <a
+                                    href={`/admin/${id}`}
+                                    className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                >
+                                    Edit
+                                </a>
+                            </li>
+
+                            <li>
+                                <a
+                                    href="#"
+                                    onMouseUp={async (e) => {
+                                        e.preventDefault();
+
+                                        try {
+                                            await fetch(`/api/bottles/${id}`, {
+                                                method: "DELETE",
+                                            });
+                                            console.info("deleted");
+                                        } catch {
+                                            console.error("error");
+                                        }
+                                    }}
+                                    className="block py-2 px-4 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                >
+                                    Delete
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                )}
             </div>
+
             <div className="flex flex-col items-center pb-10 gap-2">
-                {/* <Whiskey className="w-20" /> */}
                 <div className="text-sm text-gray-500 dark:text-gray-400">
                     {dayjs(createdAt).format("DD.MM.YYYY")}
                 </div>
                 <div>
-                    {image ? (
+                    {image && !isError ? (
                         <Image
-                            // loader={imgLoader}
-                            // src={`http://ght.bar/static/images/${image}`}
                             src={`/images/${image}`}
+                            onError={() => setIsError(true)}
                             alt={name}
                             width={200}
                             height={200}
                             loading="lazy"
                             quality={30}
                             placeholder="empty"
-                            className="rounded-full shadow-lg brightness-110"
-                            // layout="responsive"
-                            // priority={false}
+                            className="w-40 h-40 rounded-full shadow-lg brightness-110"
                         />
                     ) : (
                         <Whiskey className="w-20" />
                     )}
-                    {/* {image && <Whiskey className="w-20" />} */}
                 </div>
                 <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
                     {name}

@@ -1,16 +1,20 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import type { NextPage, InferGetServerSidePropsType } from "next";
+
+import { useState } from "react";
 
 import { GetServerSidePropsContext } from "next";
 import { authOptions, prisma } from "pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
-// import { authOptions } from '../api/auth/[...nextauth]'
+
 import { useSession, signIn, signOut } from "next-auth/react";
 import Input from "components/input";
 import { useForm } from "react-hook-form";
 
-const Admin: NextPage<{ user: any }> = ({
-    user,
+type Bottle = any;
+
+const EditBottle: NextPage<{ bottle: Bottle }> = ({
+    bottle,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const { data: session } = useSession();
     const [isLoading, setIsloading] = useState(false);
@@ -20,7 +24,7 @@ const Admin: NextPage<{ user: any }> = ({
         handleSubmit,
         formState: { errors },
         reset,
-    } = useForm<any>({ mode: "onChange" });
+    } = useForm<any>({ defaultValues: bottle, mode: "onChange" });
 
     //@ts-ignore
     if (!session || !session?.user?.isAdmin) {
@@ -28,11 +32,12 @@ const Admin: NextPage<{ user: any }> = ({
     }
 
     const onSubmit = async (values: any) => {
-        console.log(values);
         setIsloading(true);
+
         try {
             const formData = new FormData();
 
+            formData.append("id", values.id);
             formData.append("name", values.name);
             formData.append("type", values.type);
             formData.append("strength", values.strength);
@@ -42,8 +47,8 @@ const Admin: NextPage<{ user: any }> = ({
                 formData.append("image", values.image[0]);
             }
 
-            await fetch("/api/bottles/add", {
-                method: "POST",
+            await fetch("/api/bottles/edit", {
+                method: "PUT",
                 body: formData,
                 // headers: {
                 //     Accept: "application/json, application/xml, text/plain, text/html, *.*",
@@ -145,51 +150,24 @@ const Admin: NextPage<{ user: any }> = ({
     );
 };
 
-export default Admin;
+export default EditBottle;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-    // const allUsers = await prisma.users.findMany();
-    // console.log(allUsers);
+    let bottle = null;
 
-    // const session = await getServerSession(
-    //     context.req,
-    //     context.res,
-    //     authOptions
-    // );
+    try {
+        const result = await prisma.items.findUnique({
+            where: {
+                id: Number(context.query.id),
+            },
+        });
 
-    // console.log(session);
-
-    // let user = {};
-
-    // let o = Object.fromEntries(
-    //     Object.entries(context.query).filter(([_, v]) => v)
-    // );
-
-    // if (o.strength) {
-    //     //@ts-ignore
-    //     o.strength = Number(o.strength);
-    // }
-
-    // try {
-    //     // const result = await executeQuery(getQuery(query));
-
-    //     // bottles = JSON.parse(JSON.stringify(result));
-    //     const result = await prisma.items.findMany({
-    //         where: {
-    //             ...o,
-    //             name: {
-    //                 //@ts-ignore
-    //                 contains: o?.name ?? "",
-    //             },
-    //         },
-    //     });
-
-    //     user = JSON.parse(JSON.stringify(result));
-    // } catch (error) {
-    //     console.log("sql connection error", error);
-    // }
+        bottle = JSON.parse(JSON.stringify(result));
+    } catch {
+        bottle = {};
+    }
 
     return {
-        props: { user: {} }, // will be passed to the page component as props
+        props: { bottle }, // will be passed to the page component as props
     };
 }

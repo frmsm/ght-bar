@@ -1,13 +1,9 @@
 import React, { useCallback } from "react";
 import type { NextPage, InferGetServerSidePropsType } from "next";
 import { app } from "pages/_app";
-import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    updateProfile,
-} from "firebase/auth";
+
 import Router from "next/router";
-import { getDatabase, ref, set } from "firebase/database";
+
 import Input from "components/input";
 
 const writeUserData = ({
@@ -22,73 +18,11 @@ const writeUserData = ({
     login: string;
     email: string;
     imageUrl: any;
-}) => {
-    const db = getDatabase();
-    set(ref(db, "users/" + login), {
-        login: login,
-        userId,
-        username: name,
-        email: email,
-        profile_picture: imageUrl,
-    });
-};
+}) => {};
 
 const SignUp: NextPage = (
     props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) => {
-    const handleSignUp = async (event: {
-        preventDefault: () => void;
-        target: {
-            elements: {
-                email: any;
-                password: any;
-                name: any;
-                login: any;
-                repeatPassword: any;
-            };
-        };
-    }) => {
-        event.preventDefault();
-        const { email, password, repeatPassword, name, login } =
-            event.target.elements;
-
-        if (repeatPassword.value !== password.value) {
-            alert("Password incorrect");
-            return;
-        }
-
-        try {
-            const auth = getAuth(app);
-            const res = (await createUserWithEmailAndPassword(
-                auth,
-                email.value,
-                password.value
-            )) as any;
-
-            //@ts-ignore
-            updateProfile(auth.currentUser, {
-                displayName: name.value,
-                photoURL: "http://test_url",
-            });
-
-            // res.displayName = name.value;
-
-            // console.log(res);
-
-            localStorage.setItem("user", JSON.stringify(res));
-            writeUserData({
-                userId: res.user.uid,
-                name: name.value,
-                email: email.value,
-                login: login.value,
-                imageUrl: "http://test_url",
-            });
-            Router.push("/");
-        } catch (error) {
-            alert(error);
-        }
-    };
-
     return (
         <div className="flex  items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
             <div className="w-full max-w-md space-y-8">
@@ -99,8 +33,6 @@ const SignUp: NextPage = (
                 </div>
                 <form
                     className="mt-8 space-y-6"
-                    //@ts-ignore
-                    // onSubmit={handleSignUp}
                     action="/api/signup"
                     method="post"
                 >
