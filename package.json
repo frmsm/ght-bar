@@ -9,10 +9,8 @@
         "lint": "next lint"
     },
     "dependencies": {
-        "@ant-design/icons": "^4.7.0",
         "@next-auth/prisma-adapter": "^1.0.5",
         "@prisma/client": "^4.6.1",
-        "antd": "^4.23.5",
         "bcrypt-nodejs": "^0.0.3",
         "body-parser": "^1.20.2",
         "country-flag-icons": "^1.5.5",
