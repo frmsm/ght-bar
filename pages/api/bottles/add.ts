@@ -1,4 +1,4 @@
-import { prisma } from "./auth/[...nextauth]";
+import { prisma } from "../auth/[...nextauth]";
 
 import formidable from "formidable";
 import fs from "fs";
@@ -22,6 +22,7 @@ export default async function handler(
     }
 ) {
     // const data = await JSON.parse(req.body);
+    //@ts-ignore
     console.log(req.body);
     // const uploadDir = path.resolve(__dirname, "../../img");
     const uploadDir = path.join(process.cwd(), "/public/images");
@@ -32,6 +33,7 @@ export default async function handler(
     // form.uploadDir = "./";
     // form.keepExtensions = true;
 
+    //@ts-ignore
     form.parse(req, async (err, fields, files) => {
         console.log({ err, fields, files });
 
@@ -40,6 +42,7 @@ export default async function handler(
             data: {
                 ...fields,
                 strength: Number(fields.strength),
+                //@ts-ignore
                 image: files.image.newFilename,
             },
         });

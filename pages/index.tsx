@@ -26,6 +26,7 @@ export type Item = {
     user: string;
 };
 
+//@ts-ignore
 const Home: NextPage<{ bottles: Item[] }> = ({
     bottles = [],
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
@@ -63,7 +64,7 @@ const Home: NextPage<{ bottles: Item[] }> = ({
 export default Home;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-    let bottles = {};
+    let bottles = [];
 
     let o = Object.fromEntries(
         Object.entries(context.query).filter(([_, v]) => v)

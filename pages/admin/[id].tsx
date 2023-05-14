@@ -14,8 +14,8 @@ import { useForm } from "react-hook-form";
 type Bottle = any;
 
 const EditBottle: NextPage<{ bottle: Bottle }> = ({
-    bottle,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+        bottle,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const { data: session } = useSession();
     const [isLoading, setIsloading] = useState(false);
 

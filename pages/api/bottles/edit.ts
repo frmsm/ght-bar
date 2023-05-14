@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { prisma } from "../auth/[...nextauth]";
 
 import formidable from "formidable";

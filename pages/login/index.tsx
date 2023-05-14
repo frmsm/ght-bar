@@ -4,7 +4,9 @@ import type { NextPage, InferGetServerSidePropsType } from "next";
 import { getCsrfToken } from "next-auth/react";
 
 import Whiskey from "components/svg/whiskey.svg";
+import { CtxOrReq } from "next-auth/client/_utils";
 
+//@ts-ignore
 const Login: NextPage = ({
     csrfToken,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
@@ -134,7 +136,7 @@ const Login: NextPage = ({
 
 export default Login;
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: CtxOrReq | undefined) {
     return {
         props: {
             csrfToken: await getCsrfToken(context),

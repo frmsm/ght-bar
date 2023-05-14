@@ -9,6 +9,7 @@ import {
     NextAuthProvider,
 } from "components/context/next-auth";
 
+//@ts-ignore
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
     return (
         <SessionProvider session={session}>

@@ -19,32 +19,32 @@ const nextConfig = {
         return config;
     },
 
-    images: {
-        // formats: ["image/avif", "image/webp", "image/png"],
-        remotePatterns: [
-            {
-                protocol: "http",
-                hostname: "ght.bar",
-                port: "",
-                pathname: "/static/images/**",
-            },
-        ],
-    },
-
-    env: {
-        MYSQL_HOST: "127.0.0.1",
-        MYSQL_PORT: "3306",
-        MYSQL_DATABASE: "test_db",
-        MYSQL_USER: "root",
-        MYSQL_PASSWORD: "password",
-    },
-    // env: {
-    //     MYSQL_HOST: "ght.bar",
-    //     MYSQL_PORT: "3306",
-    //     MYSQL_DATABASE: "ght_bar",
-    //     MYSQL_USER: "Developer",
-    //     MYSQL_PASSWORD: "Developer1902",
+    // images: {
+    //     // formats: ["image/avif", "image/webp", "image/png"],
+    //     remotePatterns: [
+    //         {
+    //             protocol: "http",
+    //             hostname: "ght.bar",
+    //             port: "",
+    //             pathname: "/static/images/**",
+    //         },
+    //     ],
     // },
+
+    // env: {
+    //     MYSQL_HOST: "127.0.0.1",
+    //     MYSQL_PORT: "3306",
+    //     MYSQL_DATABASE: "test_db",
+    //     MYSQL_USER: "root",
+    //     MYSQL_PASSWORD: "password",
+    // },
+    env: {
+        MYSQL_HOST: "ght.bar",
+        MYSQL_PORT: "3306",
+        MYSQL_DATABASE: "ght_bar",
+        MYSQL_USER: "Developer",
+        MYSQL_PASSWORD: "Developer1902",
+    },
 };
 
 module.exports = nextConfig;

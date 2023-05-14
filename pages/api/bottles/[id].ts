@@ -16,6 +16,7 @@ export default async function handler(
         };
     }
 ) {
+    //@ts-ignore
     const { id } = req.query;
 
     if (req.method === "DELETE") {
@@ -33,6 +34,7 @@ export default async function handler(
                 });
             }
 
+            //@ts-ignore
             return res.status(200).json(result);
         } catch (e) {
             return res.status(500).json({ message: "error" });

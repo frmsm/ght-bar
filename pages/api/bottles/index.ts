@@ -1,5 +1,6 @@
 import { prisma } from "../auth/[...nextauth]";
 
+//@ts-ignore
 export default async function handler(req, res) {
     let o = Object.fromEntries(Object.entries(req.query).filter(([_, v]) => v));
 

@@ -29,13 +29,14 @@
         "react-dom": "^18.2.0",
         "react-hook-form": "^7.43.9",
         "serverless-mysql": "^1.5.4",
+        "sharp": "^0.32.1",
         "uuid": "^9.0.0",
         "xlsx": "^0.18.5"
     },
     "devDependencies": {
         "@svgr/webpack": "^6.4.0",
         "@types/bcrypt-nodejs": "^0.0.31",
-        "@types/formidable": "^2.0.5",
+        "@types/formidable": "^2.0.6",
         "@types/lodash-es": "^4.17.7",
         "@types/node": "18.8.3",
         "@types/react": "18.0.21",

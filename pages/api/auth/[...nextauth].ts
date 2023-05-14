@@ -49,11 +49,14 @@ export const authOptions = {
             },
         }),
     ],
+    secret: process.env.NEXT_PUBLIC_SECRET,
     callbacks: {
+        //@ts-ignore
         async session({ session, token }) {
             session.user = token.user;
             return session;
         },
+        //@ts-ignore
         async jwt({ token, user }) {
             if (user) {
                 token.user = user;
@@ -68,4 +71,5 @@ export const authOptions = {
     },
 };
 
+//@ts-ignore
 export default NextAuth(authOptions);

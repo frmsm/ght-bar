@@ -1,6 +1,7 @@
 import { prisma } from "./auth/[...nextauth]";
 import bCrypt from "bcrypt-nodejs";
 
+//@ts-ignore
 export default async function handler(req, res) {
     const hasEmail = await prisma.users.findFirst({
         where: {

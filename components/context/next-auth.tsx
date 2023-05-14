@@ -10,8 +10,6 @@ export const NextAuthProvider: React.FC<any> = ({ children }) => {
     const { data: session, status } = useSession();
     const [pending, setPending] = useState(true);
 
-    console.log(session);
-
     useEffect(() => {
         if (status === "loading") {
             return;

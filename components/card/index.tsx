@@ -48,46 +48,55 @@ const Card: NextPage<Item> = ({
                         <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path>
                     </svg>
                 </button>
-                {session && !session?.user?.isAdmin && (
-                    <div
-                        id="dropdown"
-                        className={`${
-                            !isSettingsOpen ? "hidden" : ""
-                        } absolute right-16 z-10 w-44 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700`}
-                    >
-                        <ul className="py-1" aria-labelledby="dropdownButton">
-                            <li>
-                                <a
-                                    href={`/admin/${id}`}
-                                    className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                                >
-                                    Edit
-                                </a>
-                            </li>
+                {
+                    //@ts-ignore
+                    session && session?.user?.isAdmin && (
+                        <div
+                            id="dropdown"
+                            className={`${
+                                !isSettingsOpen ? "hidden" : ""
+                            } absolute right-16 z-10 w-44 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700`}
+                        >
+                            <ul
+                                className="py-1"
+                                aria-labelledby="dropdownButton"
+                            >
+                                <li>
+                                    <a
+                                        href={`/admin/${id}`}
+                                        className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                    >
+                                        Edit
+                                    </a>
+                                </li>
 
-                            <li>
-                                <a
-                                    href="#"
-                                    onMouseUp={async (e) => {
-                                        e.preventDefault();
+                                <li>
+                                    <a
+                                        href="#"
+                                        onMouseUp={async (e) => {
+                                            e.preventDefault();
 
-                                        try {
-                                            await fetch(`/api/bottles/${id}`, {
-                                                method: "DELETE",
-                                            });
-                                            console.info("deleted");
-                                        } catch {
-                                            console.error("error");
-                                        }
-                                    }}
-                                    className="block py-2 px-4 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                                >
-                                    Delete
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                )}
+                                            try {
+                                                await fetch(
+                                                    `/api/bottles/${id}`,
+                                                    {
+                                                        method: "DELETE",
+                                                    }
+                                                );
+                                                console.info("deleted");
+                                            } catch {
+                                                console.error("error");
+                                            }
+                                        }}
+                                        className="block py-2 px-4 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                    >
+                                        Delete
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    )
+                }
             </div>
 
             <div className="flex flex-col items-center pb-10 gap-2">
@@ -122,7 +131,7 @@ const Card: NextPage<Item> = ({
                     </li>
 
                     <li className="text-sm text-gray-500 dark:text-gray-400">
-                        <Link href={`/?country=${countryOrigin}`}>
+                        <Link href={`/?countryOrigin=${countryOrigin}`}>
                             {countryOrigin} {getUnicodeFlagIcon(countryOrigin)}
                         </Link>
                     </li>
