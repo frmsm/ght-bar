@@ -71,23 +71,25 @@ const Header = () => {
                                         </div>
                                     </li>
                                 )}
-                                {session && session?.user?.isAdmin && (
+                                {session && (
                                     <>
-                                        <li className="nav-item cursor-pointer">
-                                            <div className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75">
-                                                <Link
-                                                    className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
-                                                    href={`/admin`}
-                                                >
-                                                    <>
-                                                        <i className="fab fa-pinterest text-lg leading-lg text-white opacity-75"></i>
-                                                        <span className="ml-2">
-                                                            Admin
-                                                        </span>
-                                                    </>
-                                                </Link>
-                                            </div>
-                                        </li>
+                                        {session?.user?.isAdmin && (
+                                            <li className="nav-item cursor-pointer">
+                                                <div className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75">
+                                                    <Link
+                                                        className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
+                                                        href={`/admin`}
+                                                    >
+                                                        <>
+                                                            <i className="fab fa-pinterest text-lg leading-lg text-white opacity-75"></i>
+                                                            <span className="ml-2">
+                                                                Admin
+                                                            </span>
+                                                        </>
+                                                    </Link>
+                                                </div>
+                                            </li>
+                                        )}
                                         <li className="nav-item cursor-pointer">
                                             <div className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75">
                                                 <Link
