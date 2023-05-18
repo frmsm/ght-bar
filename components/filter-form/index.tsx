@@ -20,9 +20,6 @@ export type Item = {
 };
 
 const Form: NextPage<{ setData: (value: any) => void }> = ({ setData }) => {
-    const router = useRouter();
-    console.log(router.query);
-
     const handleSearch = async (
         event: React.FormEvent<HTMLInputElement> | any
     ) => {
@@ -53,7 +50,9 @@ const Form: NextPage<{ setData: (value: any) => void }> = ({ setData }) => {
 
     return (
         <form
-            className="flex justify-center gap-x-4"
+            className="flex justify-center 
+            sm:flex-col
+             gap-x-4"
             //@ts-ignore
             onSubmit={handleSearch}
         >

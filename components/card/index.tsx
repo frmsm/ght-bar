@@ -26,15 +26,15 @@ const Card: NextPage<Item> = ({
 
     return (
         <div
-            style={{ minWidth: "296px" }}
-            className="w-full relative max-w-sm min-w-fit bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700"
+            style={{ width: "296px" }}
+            className="w-full relative max-w-sm min-w-fit bg-white rounded-lg border border-gray-200 shadow-md "
         >
             <div className="flex justify-end px-4 pt-4">
                 <button
                     id="dropdownButton"
                     data-dropdown-toggle="dropdown"
                     onMouseDown={toggleSettings}
-                    className="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5"
+                    className="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100  focus:ring-4 focus:outline-none focus:ring-gray-200  rounded-lg text-sm p-1.5"
                     type="button"
                 >
                     <span className="sr-only">Open dropdown</span>
@@ -55,7 +55,7 @@ const Card: NextPage<Item> = ({
                             id="dropdown"
                             className={`${
                                 !isSettingsOpen ? "hidden" : ""
-                            } absolute right-16 z-10 w-44 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700`}
+                            } absolute right-16 z-10 w-44 text-base list-none bg-white rounded divide-y divide-gray-100 shadow `}
                         >
                             <ul
                                 className="py-1"
@@ -64,7 +64,7 @@ const Card: NextPage<Item> = ({
                                 <li>
                                     <a
                                         href={`/admin/${id}`}
-                                        className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                        className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100"
                                     >
                                         Edit
                                     </a>
@@ -88,7 +88,7 @@ const Card: NextPage<Item> = ({
                                                 console.error("error");
                                             }
                                         }}
-                                        className="block py-2 px-4 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                        className="block py-2 px-4 text-sm text-red-600 hover:bg-gray-100 "
                                     >
                                         Delete
                                     </a>
@@ -100,7 +100,7 @@ const Card: NextPage<Item> = ({
             </div>
 
             <div className="flex flex-col items-center pb-10 gap-2">
-                <div className="text-sm text-gray-500 dark:text-gray-400">
+                <div className="text-sm text-gray-500 ">
                     {dayjs(createdAt).format("DD.MM.YYYY")}
                 </div>
                 <div>
@@ -120,27 +120,25 @@ const Card: NextPage<Item> = ({
                         <Whiskey className="w-20" />
                     )}
                 </div>
-                <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+                <h5 className="mb-1 text-xl font-medium text-gray-900 ">
                     {name}
                 </h5>
                 <ul className="flex flex-col items-center pb-10">
-                    <li className="text-sm text-gray-500 dark:text-gray-400">
+                    <li className="text-sm text-gray-500 ">
                         <Link href={`/?strength=${strength}`}>
                             {strength} %
                         </Link>
                     </li>
 
-                    <li className="text-sm text-gray-500 dark:text-gray-400">
+                    <li className="text-sm text-gray-500 ">
                         <Link href={`/?countryOrigin=${countryOrigin}`}>
                             {countryOrigin} {getUnicodeFlagIcon(countryOrigin)}
                         </Link>
                     </li>
-                    <li className="text-sm text-gray-500 dark:text-gray-400">
+                    <li className="text-sm text-gray-500 ">
                         <Link href={`/?user=${user}`}>{user}</Link>
                     </li>
-                    <li className="text-sm text-gray-500 dark:text-gray-400">
-                        {notes}
-                    </li>
+                    <li className="text-sm text-gray-500 ">{notes}</li>
                 </ul>
                 {/* <div className="flex mt-4 space-x-3 md:mt-6">
                     <a

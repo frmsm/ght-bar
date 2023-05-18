@@ -14,7 +14,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
     return (
         <SessionProvider session={session}>
             <NextAuthProvider>
-                <div className="flex flex-col min-h-full">
+                <div
+                // className="flex flex-col min-h-full"
+                >
                     <Header />
                     <div className="flex grow [&>*]:grow">
                         <Component {...pageProps} />

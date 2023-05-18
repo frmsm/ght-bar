@@ -30,9 +30,9 @@ export type Item = {
 const Home: NextPage<{ bottles: Item[] }> = ({
     bottles = [],
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    const { data: session, ...rest } = useSession();
+    const { data: session } = useSession();
     const [data, setData] = useState(bottles);
-    console.log({ rest });
+
     //@ts-ignore
     if (!session) {
         Router.push("/login");
@@ -49,12 +49,16 @@ const Home: NextPage<{ bottles: Item[] }> = ({
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <Form setData={setData} />
-            <div className="p-8">
-                <div className="flex flex-wrap gap-8 justify-center">
-                    {data?.map((bottle: Item) => {
-                        return <Card key={bottle.id.toString()} {...bottle} />;
-                    })}
+            <div className="p-2">
+                <Form setData={setData} />
+                <div className="p-8">
+                    <div className="flex  flex-wrap  gap-8 justify-center">
+                        {data?.map((bottle: Item) => {
+                            return (
+                                <Card key={bottle.id.toString()} {...bottle} />
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
         </div>
