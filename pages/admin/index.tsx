@@ -10,8 +10,8 @@ import Input from "components/input";
 import { useForm } from "react-hook-form";
 
 const Admin: NextPage<{ user: any }> = ({
-    user,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+        user,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const { data: session } = useSession();
     const [isLoading, setIsloading] = useState(false);
 
@@ -24,7 +24,7 @@ const Admin: NextPage<{ user: any }> = ({
 
     //@ts-ignore
     if (!session || !session?.user?.isAdmin) {
-        console.log("not admin");
+        window.location.replace("/");
     }
 
     const onSubmit = async (values: any) => {

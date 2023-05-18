@@ -18,7 +18,7 @@ export const NextAuthProvider: React.FC<any> = ({ children }) => {
         const pathname = Router.pathname.toLowerCase();
         if (status === "authenticated") {
             if (pathname === "/login" || pathname === "/signup") {
-                Router.push("/");
+                window.location.replace("/");
             } else {
                 setPending(false);
             }
@@ -26,7 +26,7 @@ export const NextAuthProvider: React.FC<any> = ({ children }) => {
             if (pathname === "/login" || pathname === "/signup") {
                 setPending(false);
             } else {
-                Router.push("/login");
+                window.location.replace("/login");
             }
         }
     }, [status]);
