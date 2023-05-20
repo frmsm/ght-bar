@@ -11,7 +11,6 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import Input from "components/input";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
-import heic2any from "heic2any";
 
 type Bottle = any;
 
@@ -50,6 +49,8 @@ const EditBottle: NextPage<{ bottle: Bottle }> = ({
                 let newImage = values.image[0];
 
                 if (values.image[0].type === "image/heic") {
+                    const heic2any = (await import("heic2any")).default;
+
                     newImage = await heic2any({ blob: values.image[0] });
                 }
 
