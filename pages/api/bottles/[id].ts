@@ -5,6 +5,7 @@ import { prisma } from "../auth/[...nextauth]";
 // import path from "path";
 // import isEmpty from "lodash-es/isEmpty";
 import { IncomingMessage } from "http";
+import { getSession } from "next-auth/react";
 
 export default async function handler(
     req: IncomingMessage,
@@ -18,6 +19,14 @@ export default async function handler(
 ) {
     //@ts-ignore
     const { id } = req.query;
+
+    //@ts-ignore
+    const session = await getSession({ req });
+
+    //@ts-ignore
+    if (!session?.user?.isAdmin) {
+        throw new Error("Current user is not admin");
+    }
 
     if (req.method === "DELETE") {
         try {

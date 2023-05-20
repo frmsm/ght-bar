@@ -8,12 +8,13 @@ import { getServerSession } from "next-auth/next";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Input from "components/input";
 import { useForm } from "react-hook-form";
+import { Router } from "next/router";
+import { useRouter } from "next/router";
 
-const Admin: NextPage<{ user: any }> = ({
-        user,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Admin: NextPage = (props) => {
     const { data: session } = useSession();
     const [isLoading, setIsloading] = useState(false);
+    const router = useRouter();
 
     const {
         register,
@@ -24,11 +25,10 @@ const Admin: NextPage<{ user: any }> = ({
 
     //@ts-ignore
     if (!session || !session?.user?.isAdmin) {
-        window.location.replace("/");
+        router.push("/");
     }
 
     const onSubmit = async (values: any) => {
-        console.log(values);
         setIsloading(true);
         try {
             const formData = new FormData();
@@ -50,6 +50,8 @@ const Admin: NextPage<{ user: any }> = ({
                 //     "Content-Type": "multipart/form-data",
                 // },
             });
+
+            // router.push("/");
         } catch (err) {
             console.log(err);
         }
@@ -79,7 +81,7 @@ const Admin: NextPage<{ user: any }> = ({
                             id="name"
                             type="text"
                             // name="name"
-                            placeholder="name"
+                            placeholder="Name"
                             required
                             {...register("name")}
                         />
@@ -147,49 +149,49 @@ const Admin: NextPage<{ user: any }> = ({
 
 export default Admin;
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-    // const allUsers = await prisma.users.findMany();
-    // console.log(allUsers);
+// export async function getServerSideProps(context: GetServerSidePropsContext) {
+//     // const allUsers = await prisma.users.findMany();
+//     // console.log(allUsers);
 
-    // const session = await getServerSession(
-    //     context.req,
-    //     context.res,
-    //     authOptions
-    // );
+//     // const session = await getServerSession(
+//     //     context.req,
+//     //     context.res,
+//     //     authOptions
+//     // );
 
-    // console.log(session);
+//     // console.log(session);
 
-    // let user = {};
+//     // let user = {};
 
-    // let o = Object.fromEntries(
-    //     Object.entries(context.query).filter(([_, v]) => v)
-    // );
+//     // let o = Object.fromEntries(
+//     //     Object.entries(context.query).filter(([_, v]) => v)
+//     // );
 
-    // if (o.strength) {
-    //     //@ts-ignore
-    //     o.strength = Number(o.strength);
-    // }
+//     // if (o.strength) {
+//     //     //@ts-ignore
+//     //     o.strength = Number(o.strength);
+//     // }
 
-    // try {
-    //     // const result = await executeQuery(getQuery(query));
+//     // try {
+//     //     // const result = await executeQuery(getQuery(query));
 
-    //     // bottles = JSON.parse(JSON.stringify(result));
-    //     const result = await prisma.items.findMany({
-    //         where: {
-    //             ...o,
-    //             name: {
-    //                 //@ts-ignore
-    //                 contains: o?.name ?? "",
-    //             },
-    //         },
-    //     });
+//     //     // bottles = JSON.parse(JSON.stringify(result));
+//     //     const result = await prisma.items.findMany({
+//     //         where: {
+//     //             ...o,
+//     //             name: {
+//     //                 //@ts-ignore
+//     //                 contains: o?.name ?? "",
+//     //             },
+//     //         },
+//     //     });
 
-    //     user = JSON.parse(JSON.stringify(result));
-    // } catch (error) {
-    //     console.log("sql connection error", error);
-    // }
+//     //     user = JSON.parse(JSON.stringify(result));
+//     // } catch (error) {
+//     //     console.log("sql connection error", error);
+//     // }
 
-    return {
-        props: { user: {} }, // will be passed to the page component as props
-    };
-}
+//     return {
+//         props: { user: {} }, // will be passed to the page component as props
+//     };
+// }

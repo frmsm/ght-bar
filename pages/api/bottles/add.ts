@@ -4,6 +4,7 @@ import formidable from "formidable";
 import fs from "fs";
 import { IncomingMessage } from "http";
 import path from "path";
+import { getSession } from "next-auth/react";
 
 export const config = {
     api: {
@@ -21,66 +22,37 @@ export default async function handler(
         };
     }
 ) {
-    // const data = await JSON.parse(req.body);
-    //@ts-ignore
-    console.log(req.body);
-    // const uploadDir = path.resolve(__dirname, "../../img");
-    const uploadDir = path.join(process.cwd(), "/public/images");
-    const form = new formidable.IncomingForm({
-        uploadDir, // don't forget the __dirname here
-        keepExtensions: true,
-    });
-    // form.uploadDir = "./";
-    // form.keepExtensions = true;
+    try {
+        //@ts-ignore
+        const session = await getSession({ req });
 
-    //@ts-ignore
-    form.parse(req, async (err, fields, files) => {
-        console.log({ err, fields, files });
+        //@ts-ignore
+        if (!session?.user?.isAdmin) {
+            throw new Error("Current user is not admin");
+        }
 
-        await prisma.items.create({
-            //@ts-ignore
-            data: {
-                ...fields,
-                strength: Number(fields.strength),
-                //@ts-ignore
-                image: files.image.newFilename,
-            },
+        const uploadDir = path.join(process.cwd(), "/public/images");
+        const form = new formidable.IncomingForm({
+            uploadDir, // don't forget the __dirname here
+            keepExtensions: true,
         });
 
-        // let oldPath = files.image.filepath;
-        // let newPath =
-        //     path.join(__dirname) +
-        //     "/" +
-        //     fields.name +
-        //     "." +
-        //     files.image.originalFilename.split(".").reverse()[0];
-        // let rawData = fs.readFileSync(oldPath);
+        //@ts-ignore
+        form.parse(req, async (err, fields, files) => {
+            await prisma.items.create({
+                //@ts-ignore
+                data: {
+                    ...fields,
+                    strength: Number(fields.strength),
+                    //@ts-ignore
+                    image: files.image.newFilename,
+                },
+            });
+        });
 
-        // fs.writeFile(newPath, rawData, function (err) {
-        //     if (err) console.log(err);
-        //     return res.send("Successfully uploaded");
-        // });
-    });
-    // .on("file", function (field, file) {
-    //     console.log({ field });
-    //     fs.rename(
-    //         file.filepath,
-    //         form.uploadDir + "/" + file.originalFilename,
-    //         (error) => console.log(error)
-    //     );
-    // });
-    try {
-        // await prisma.items.create({
-        //     //@ts-ignore
-        //     data: {
-        //         ...data,
-        //         strength: Number(data.strength),
-        //     },
-        // });
-        // if
         return res.status(200).json({});
-    } catch (e) {
-        console.log(e);
-        return res.status(200).json({ message: "error" });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ message: "Error" });
     }
 }

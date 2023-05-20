@@ -33,6 +33,8 @@ const Home: NextPage<{ bottles: Item[] }> = ({
     const { data: session } = useSession();
     const [data, setData] = useState(bottles);
 
+    const [isFilterOpen, setFilterOpen] = useState(false);
+
     //@ts-ignore
     if (!session) {
         Router.push("/login");
@@ -49,8 +51,20 @@ const Home: NextPage<{ bottles: Item[] }> = ({
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
+            <div
+                className="h-6 justify-center hidden md:flex font-bold"
+                onClick={() => setFilterOpen((prev) => !prev)}
+            >
+                {isFilterOpen ? "Hide filter" : "Show filter"}
+            </div>
             <div className="p-2">
-                <Form setData={setData} />
+                <div
+                    className={`truncate ${
+                        isFilterOpen ? "md:h-400" : "md:h-0"
+                    }`}
+                >
+                    <Form setData={setData} />
+                </div>
                 <div className="p-8">
                     <div className="flex  flex-wrap  gap-8 justify-center">
                         {data?.map((bottle: Item) => {

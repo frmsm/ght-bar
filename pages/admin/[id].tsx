@@ -10,14 +10,16 @@ import { getServerSession } from "next-auth/next";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Input from "components/input";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
 
 type Bottle = any;
 
 const EditBottle: NextPage<{ bottle: Bottle }> = ({
-        bottle,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    bottle,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const { data: session } = useSession();
     const [isLoading, setIsloading] = useState(false);
+    const router = useRouter();
 
     const {
         register,
@@ -28,7 +30,7 @@ const EditBottle: NextPage<{ bottle: Bottle }> = ({
 
     //@ts-ignore
     if (!session || !session?.user?.isAdmin) {
-        console.log("not admin");
+        router.push("/");
     }
 
     const onSubmit = async (values: any) => {

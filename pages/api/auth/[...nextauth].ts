@@ -5,6 +5,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import bCrypt from "bcrypt-nodejs";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaClient } from "@prisma/client";
+
 export const prisma = new PrismaClient();
 
 export const authOptions = {
@@ -18,6 +19,7 @@ export const authOptions = {
 
                 let isLoggedIn = false;
                 let user = null;
+
                 if (username && password) {
                     try {
                         user = await prisma.users.findFirst({

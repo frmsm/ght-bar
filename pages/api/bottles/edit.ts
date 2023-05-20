@@ -36,15 +36,11 @@ export default async function handler(
     // form.keepExtensions = true;
     try {
         form.parse(req, async (err, fields, files) => {
-            console.log({ fields });
-
             const item = await prisma.items.findFirst({
                 where: {
                     id: Number(fields.id),
                 },
             });
-
-            console.log(item);
 
             const result = await prisma.items.update({
                 where: {

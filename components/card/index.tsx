@@ -6,7 +6,9 @@ import type { Item } from "pages";
 import dayjs from "dayjs";
 import Link from "next/link";
 import getUnicodeFlagIcon from "country-flag-icons/unicode";
+import ReactCountryFlag from "react-country-flag";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { COUNTRY } from "./constants";
 
 const Card: NextPage<Item> = ({
     image,
@@ -15,7 +17,6 @@ const Card: NextPage<Item> = ({
     strength,
     user,
     countryOrigin,
-    createdAt,
     id,
 }) => {
     const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
@@ -100,9 +101,7 @@ const Card: NextPage<Item> = ({
             </div>
 
             <div className="flex flex-col items-center pb-10 gap-2">
-                <div className="text-sm text-gray-500 ">
-                    {dayjs(createdAt).format("DD.MM.YYYY")}
-                </div>
+                <br />
                 <div>
                     {image && !isError ? (
                         <Image
@@ -132,7 +131,13 @@ const Card: NextPage<Item> = ({
 
                     <li className="text-sm text-gray-500 ">
                         <Link href={`/?countryOrigin=${countryOrigin}`}>
-                            {countryOrigin} {getUnicodeFlagIcon(countryOrigin)}
+                            {countryOrigin}{" "}
+                            <ReactCountryFlag
+                                countryCode={
+                                    //@ts-ignore
+                                    COUNTRY[countryOrigin] ?? ""
+                                }
+                            />
                         </Link>
                     </li>
                     <li className="text-sm text-gray-500 ">

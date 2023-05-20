@@ -9,6 +9,7 @@ export const NextAuthContext = React.createContext({});
 export const NextAuthProvider: React.FC<any> = ({ children }) => {
     const { data: session, status } = useSession();
     const [pending, setPending] = useState(true);
+    const router = useRouter();
 
     useEffect(() => {
         if (status === "loading") {
@@ -18,7 +19,7 @@ export const NextAuthProvider: React.FC<any> = ({ children }) => {
         const pathname = Router.pathname.toLowerCase();
         if (status === "authenticated") {
             if (pathname === "/login" || pathname === "/signup") {
-                window.location.replace("/");
+                router.push("/");
             } else {
                 setPending(false);
             }
@@ -26,10 +27,10 @@ export const NextAuthProvider: React.FC<any> = ({ children }) => {
             if (pathname === "/login" || pathname === "/signup") {
                 setPending(false);
             } else {
-                window.location.replace("/login");
+                router.push("/login");
             }
         }
-    }, [status]);
+    }, [router, status]);
 
     useEffect(() => {
         const handlePageChangeComplete = () => setPending(false);
