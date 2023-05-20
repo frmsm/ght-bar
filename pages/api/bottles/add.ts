@@ -37,20 +37,23 @@ export default async function handler(
             keepExtensions: true,
         });
 
-        //@ts-ignore
         form.parse(req, async (err, fields, files) => {
+            if (err) {
+                throw new Error("400 code");
+            }
+
             await prisma.items.create({
                 //@ts-ignore
                 data: {
                     ...fields,
                     strength: Number(fields.strength),
                     //@ts-ignore
-                    image: files.image.newFilename,
+                    image: files?.image?.newFilename ?? "",
                 },
             });
-        });
 
-        return res.status(200).json({});
+            return res.status(200).json({});
+        });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: "Error" });

@@ -10,6 +10,7 @@ import Input from "components/input";
 import { useForm } from "react-hook-form";
 import { Router } from "next/router";
 import { useRouter } from "next/router";
+import heic2any from "heic2any";
 
 const Admin: NextPage = (props) => {
     const { data: session } = useSession();
@@ -39,7 +40,13 @@ const Admin: NextPage = (props) => {
             formData.append("countryOrigin", values.countryOrigin);
             formData.append("user", values.user);
             if (values.image) {
-                formData.append("image", values.image[0]);
+                let newImage = values.image[0];
+
+                if (values.image[0].type === "image/heic") {
+                    newImage = await heic2any({ blob: values.image[0] });
+                }
+
+                formData.append("image", newImage);
             }
 
             await fetch("/api/bottles/add", {
@@ -122,7 +129,7 @@ const Admin: NextPage = (props) => {
                             {...register("user")}
                         />
                         <Input
-                            accept="image/*"
+                            accept="image/*, .heic"
                             label="Image"
                             id="image"
                             type="file"

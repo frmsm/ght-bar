@@ -113,7 +113,7 @@ const Card: NextPage<Item> = ({
                             loading="lazy"
                             quality={30}
                             placeholder="empty"
-                            className="w-40 h-40 rounded-full shadow-lg brightness-110"
+                            className="w-40 h-40 rounded-full"
                         />
                     ) : (
                         <Whiskey className="w-20" />
