@@ -59,7 +59,7 @@ const Admin: NextPage = (props) => {
                 // },
             });
 
-            // router.push("/");
+            router.push(`/?name=${values.name}`);
         } catch (err) {
             console.log(err);
         }

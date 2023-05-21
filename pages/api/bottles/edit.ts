@@ -6,6 +6,7 @@ import fs from "fs";
 import path from "path";
 import isEmpty from "lodash-es/isEmpty";
 import { IncomingMessage } from "http";
+import { getSession } from "next-auth/react";
 
 export const config = {
     api: {
@@ -23,6 +24,13 @@ export default async function handler(
         };
     }
 ) {
+    //@ts-ignore
+    const session = await getSession({ req });
+
+    //@ts-ignore
+    if (!session?.user?.isAdmin) {
+        throw new Error("Current user is not admin");
+    }
     // const data = await JSON.parse(req.body);
 
     // const uploadDir = path.resolve(__dirname, "../../img");

@@ -9,6 +9,7 @@ import getUnicodeFlagIcon from "country-flag-icons/unicode";
 import ReactCountryFlag from "react-country-flag";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { COUNTRY } from "./constants";
+import { useRouter } from "next/router";
 
 const Card: NextPage<Item> = ({
     image,
@@ -22,6 +23,7 @@ const Card: NextPage<Item> = ({
     const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
     const toggleSettings = () => setIsSettingsOpen((prev) => !prev);
     const { data: session } = useSession();
+    const router = useRouter();
 
     const [isError, setIsError] = useState(false);
 
@@ -77,16 +79,23 @@ const Card: NextPage<Item> = ({
                                         onMouseUp={async (e) => {
                                             e.preventDefault();
 
-                                            try {
-                                                await fetch(
-                                                    `/api/bottles/${id}`,
-                                                    {
-                                                        method: "DELETE",
-                                                    }
-                                                );
-                                                console.info("deleted");
-                                            } catch {
-                                                console.error("error");
+                                            const isDelete = confirm(
+                                                "Ты что, собрался удалить эту хрень?"
+                                            );
+
+                                            if (isDelete) {
+                                                try {
+                                                    await fetch(
+                                                        `/api/bottles/${id}`,
+                                                        {
+                                                            method: "DELETE",
+                                                        }
+                                                    );
+
+                                                    router.push("/");
+                                                } catch {
+                                                    console.error("error");
+                                                }
                                             }
                                         }}
                                         className="block py-2 px-4 text-sm text-red-600 hover:bg-gray-100 "

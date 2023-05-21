@@ -15,8 +15,8 @@ import { useRouter } from "next/router";
 type Bottle = any;
 
 const EditBottle: NextPage<{ bottle: Bottle }> = ({
-    bottle,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+        bottle,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const { data: session } = useSession();
     const [isLoading, setIsloading] = useState(false);
     const router = useRouter();
@@ -65,6 +65,8 @@ const EditBottle: NextPage<{ bottle: Bottle }> = ({
                 //     "Content-Type": "multipart/form-data",
                 // },
             });
+
+            router.push(`/?name=${values.name}`);
         } catch (err) {
             console.log(err);
         }
