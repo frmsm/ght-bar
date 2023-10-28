@@ -17,7 +17,7 @@ export default async function handler(req, res) {
 
     if (!(hasLogin || hasEmail)) {
         try {
-            const newUser = await prisma.users.create({
+            await prisma.users.create({
                 //@ts-ignore
                 data: {
                     username: req.body.login as string,

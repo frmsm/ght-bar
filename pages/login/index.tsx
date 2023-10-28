@@ -1,15 +1,17 @@
 import React from "react";
-import type { NextPage, InferGetServerSidePropsType } from "next";
+// import type { NextPage, InferGetServerSidePropsType } from "next";
 
-import { getCsrfToken } from "next-auth/react";
+// import { getCsrfToken } from "next-auth/react";
 
 import Whiskey from "components/svg/whiskey.svg";
-import { CtxOrReq } from "next-auth/client/_utils";
+// import { CtxOrReq } from "next-auth/client/_utils";
 
-//@ts-ignore
-const Login: NextPage = ({
-        csrfToken,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Login = (
+    {
+        // csrfToken,
+    }
+) => {
+    // const token = await getCsrfToken();
     return (
         <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
             <div className="w-full max-w-md space-y-8">
@@ -28,11 +30,11 @@ const Login: NextPage = ({
                     //@ts-ignore
                     // onSubmit={handleSignUp}
                 >
-                    <input
+                    {/* <input
                         name="csrfToken"
                         type="hidden"
                         defaultValue={csrfToken}
-                    />
+                    /> */}
                     <input type="hidden" name="remember" value="true" />
                     <div className="-space-y-px rounded-md shadow-sm">
                         {/* <div>
@@ -135,11 +137,3 @@ const Login: NextPage = ({
 };
 
 export default Login;
-
-export async function getServerSideProps(context: CtxOrReq | undefined) {
-    return {
-        props: {
-            csrfToken: await getCsrfToken(context),
-        },
-    };
-}

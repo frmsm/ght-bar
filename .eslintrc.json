@@ -1,3 +1,26 @@
 {
-  "extends": "next/core-web-vitals"
+    "extends": [
+        "next/core-web-vitals",
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
+
+    "rules": {
+        "react/jsx-sort-props": [
+            2,
+            {
+                "callbacksLast": true,
+                "ignoreCase": false,
+                "noSortAlphabetically": false,
+                "reservedFirst": true,
+                "shorthandLast": true
+            }
+        ],
+
+        "sort-keys": [
+            "error",
+            "asc",
+            { "caseSensitive": true, "natural": false, "minKeys": 2 }
+        ]
+    }
 }

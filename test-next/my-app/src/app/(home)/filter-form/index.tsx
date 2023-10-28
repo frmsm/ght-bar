@@ -1,0 +1,94 @@
+"use client";
+
+import React from "react";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+import { useSearchParams } from "next/navigation";
+
+import Input from "@/components/input";
+
+import useSubmit from "./use-submit";
+
+const FilterSchema = z.object({
+    strength: z.string().max(2).optional(),
+    name: z.string().optional(),
+    countryOrigin: z.string().optional(),
+    user: z.string().optional(),
+});
+
+export type FilterSchemaType = z.infer<typeof FilterSchema>;
+
+export default function Form({ setQuery }: any) {
+    const searchParams = useSearchParams();
+
+    const strength = searchParams.get("strength") || "";
+    const name = searchParams.get("name") || "";
+    const countryOrigin = searchParams.get("countryOrigin") || "";
+    const user = searchParams.get("user") || "";
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<FilterSchemaType>({
+        defaultValues: { strength, name, countryOrigin, user },
+        resolver: zodResolver(FilterSchema),
+    });
+
+    const onSubmit = useSubmit(setQuery);
+
+    return (
+        <form
+            className="flex justify-center 
+            sm:flex-col
+             gap-x-4"
+            onSubmit={handleSubmit(onSubmit)}
+        >
+            <Input
+                {...register("strength")}
+                autoComplete
+                label="Strength"
+                id="strength"
+                type="number"
+                placeholder="Strength"
+                error={errors.strength?.message}
+            />
+            <Input
+                {...register("user")}
+                autoComplete
+                label="User"
+                id="user"
+                type="text"
+                placeholder="User"
+                error={errors.user?.message}
+            />
+            <Input
+                {...register("name")}
+                autoComplete
+                label="Name"
+                id="name"
+                type="text"
+                placeholder="Name"
+                error={errors.name?.message}
+            />
+            <Input
+                {...register("countryOrigin")}
+                autoComplete
+                label="Country"
+                id="countryOrigin"
+                type="text"
+                placeholder="Country"
+                error={errors.countryOrigin?.message}
+            />
+            <button
+                type="submit"
+                className="w-20 h-11 group relative flex justify-center rounded-md border border-transparent bg-emerald-600 py-2 px-4 text-sm font-medium text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+            >
+                Search
+            </button>
+        </form>
+    );
+}

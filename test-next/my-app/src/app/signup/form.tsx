@@ -1,0 +1,139 @@
+"use client";
+
+import React, { useState } from "react";
+import useSWRMutation from "swr/mutation";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+import Input from "@/components/input";
+
+import { useRouter } from "next/navigation";
+
+async function sendRequest(url: string, { arg }: { arg: FormData }) {
+    const res = await fetch(url, {
+        method: "POST",
+        body: arg,
+    });
+
+    if (!res.ok) {
+        const error: any = new Error(
+            "An error occurred while fetching the data."
+        );
+        // Attach extra info to the error object.
+        error.info = await res.json();
+        error.status = res.status;
+        throw error;
+    }
+
+    return res.json();
+}
+
+const SignUpSchema = z
+    .object({
+        email: z.string().email().trim(),
+        password: z.string().min(8).max(20).trim(),
+        confirmPassword: z.string().min(8).max(20).trim(),
+        login: z.string().min(3).max(20).trim(),
+        name: z.string().min(3).max(20).trim(),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+        message: "Passwords don't match",
+        path: ["confirmPassword"],
+    });
+
+type SignUpSchemaType = z.infer<typeof SignUpSchema>;
+
+export default function Form() {
+    const { trigger, isMutating, error } = useSWRMutation(
+        "/api/signup",
+        sendRequest /* опции */
+    );
+    const router = useRouter();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<SignUpSchemaType>({ resolver: zodResolver(SignUpSchema) });
+
+    const onSubmit = async (values: SignUpSchemaType) => {
+        const formData = new FormData();
+
+        for (const key in values) {
+            //@ts-ignore
+            formData.append(key, values[key]);
+        }
+
+        try {
+            await trigger(formData);
+
+            router.push("/login");
+        } catch {
+            console.log("error");
+        }
+    };
+
+    return (
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
+            <div className="flex justify-center text-rose-400">
+                <div>{error && error.info ? error.info.message : null}</div>
+            </div>
+            <div className=" rounded-md shadow-sm">
+                <Input
+                    {...register("email")}
+                    autoComplete="email"
+                    label="Email"
+                    id="email"
+                    type="email"
+                    placeholder="Email"
+                    error={errors.email?.message}
+                />
+                <Input
+                    {...register("password")}
+                    autoComplete="password"
+                    label="Password"
+                    id="password"
+                    type="password"
+                    placeholder="Password"
+                    error={errors.password?.message}
+                />
+                <Input
+                    {...register("confirmPassword")}
+                    autoComplete="password"
+                    label="Repeat password"
+                    id="confirmPassword"
+                    type="password"
+                    placeholder="Repeat password"
+                    error={errors.confirmPassword?.message}
+                />
+                <Input
+                    {...register("login")}
+                    autoComplete="nickname"
+                    label="login"
+                    id="login"
+                    type="text"
+                    placeholder="Login"
+                    error={errors.login?.message}
+                />
+                <Input
+                    {...register("name")}
+                    autoComplete="username"
+                    label="Name"
+                    id="name"
+                    type="text"
+                    name="name"
+                    placeholder="Name"
+                    error={errors.name?.message}
+                />
+            </div>
+            <button
+                disabled={isMutating}
+                type="submit"
+                className="group relative flex w-full justify-center rounded-md border border-transparent bg-emerald-600 py-2 px-4 text-sm font-medium text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+            >
+                Sign up
+            </button>
+        </form>
+    );
+}
