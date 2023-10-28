@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    reactStrictMode: true,
+    // reactStrictMode: true,
     swcMinify: true,
 
     webpack(config, { isServer }) {
@@ -10,26 +10,14 @@ const nextConfig = {
             use: ["@svgr/webpack"],
         });
 
-        // if (!isServer) {
-        //     config.resolve.fallback.net = false;
-        //     config.resolve.fallback.tls = false;
-        //     config.resolve.fallback.fs = false;
-        // }
+        if (!isServer) {
+            config.resolve.fallback.net = false;
+            config.resolve.fallback.tls = false;
+            config.resolve.fallback.fs = false;
+        }
 
         return config;
     },
-
-    // images: {
-    //     // formats: ["image/avif", "image/webp", "image/png"],
-    //     remotePatterns: [
-    //         {
-    //             protocol: "http",
-    //             hostname: "ght.bar",
-    //             port: "",
-    //             pathname: "/static/images/**",
-    //         },
-    //     ],
-    // },
 
     env: {
         MYSQL_HOST: "127.0.0.1",

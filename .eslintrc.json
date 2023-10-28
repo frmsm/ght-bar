@@ -1,4 +1,6 @@
 {
+    "plugins": ["react"],
+
     "extends": [
         "next/core-web-vitals",
         "eslint:recommended",
