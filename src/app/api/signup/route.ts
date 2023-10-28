@@ -1,6 +1,5 @@
 import bCrypt from "bcrypt";
 
-import { redirect } from "next/navigation";
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/auth";
 
@@ -40,8 +39,6 @@ const handler = async (req: NextRequest) => {
                 },
             });
 
-            // return NextResponse.redirect(new URL("/login", req.url), 303);
-
             return NextResponse.json(
                 {
                     message: `User ${login} has created`,
@@ -55,7 +52,6 @@ const handler = async (req: NextRequest) => {
         }
     }
 
-    // return NextResponse.redirect(new URL("/login", req.url), 303);
     return NextResponse.json(
         {
             message: `Cant create user ${login}`,
