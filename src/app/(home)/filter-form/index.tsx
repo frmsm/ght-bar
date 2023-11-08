@@ -49,43 +49,43 @@ export default function Form({ setQuery }: any) {
         >
             <Input
                 {...register("strength")}
-                autoComplete
-                label="Strength"
-                id="strength"
-                type="number"
-                placeholder="Strength"
                 error={errors.strength?.message}
+                id="strength"
+                label="Strength"
+                placeholder="Strength"
+                type="number"
+                autoComplete
             />
             <Input
                 {...register("user")}
-                autoComplete
-                label="User"
-                id="user"
-                type="text"
-                placeholder="User"
                 error={errors.user?.message}
+                id="user"
+                label="User"
+                placeholder="User"
+                type="text"
+                autoComplete
             />
             <Input
                 {...register("name")}
-                autoComplete
-                label="Name"
-                id="name"
-                type="text"
-                placeholder="Name"
                 error={errors.name?.message}
+                id="name"
+                label="Name"
+                placeholder="Name"
+                type="text"
+                autoComplete
             />
             <Input
                 {...register("countryOrigin")}
-                autoComplete
-                label="Country"
-                id="countryOrigin"
-                type="text"
-                placeholder="Country"
                 error={errors.countryOrigin?.message}
+                id="countryOrigin"
+                label="Country"
+                placeholder="Country"
+                type="text"
+                autoComplete
             />
             <button
-                type="submit"
                 className="w-20 h-11 group relative flex justify-center rounded-md border border-transparent bg-emerald-600 py-2 px-4 text-sm font-medium text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+                type="submit"
             >
                 Search
             </button>

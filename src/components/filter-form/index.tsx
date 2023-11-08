@@ -1,9 +1,11 @@
+/* eslint-disable sort-keys */
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+import React from "react";
+
 import type { NextPage } from "next";
-import React, { useContext, useState } from "react";
 
 import Input from "../input";
-import { useRouter } from "next/router";
-import Router from "next/router";
 
 export type Item = {
     code_iso: string;
@@ -57,41 +59,41 @@ const Form: NextPage<{ setData: (value: any) => void }> = ({ setData }) => {
             onSubmit={handleSearch}
         >
             <Input
-                autoComplete
-                label="Strength"
                 id="strength"
-                type="text"
+                label="Strength"
                 name="strength"
                 placeholder="Strength"
+                type="text"
+                autoComplete
             />
             <Input
-                autoComplete
-                label="User"
                 id="user"
-                type="text"
+                label="User"
                 name="user"
                 placeholder="User"
+                type="text"
+                autoComplete
             />
             <Input
-                autoComplete
-                label="Name"
                 id="name"
-                type="text"
+                label="Name"
                 name="name"
                 placeholder="Name"
+                type="text"
+                autoComplete
             />
             <Input
-                autoComplete
-                label="Country"
                 id="countryOrigin"
-                type="text"
+                label="Country"
                 name="countryOrigin"
                 placeholder="Country"
+                type="text"
+                autoComplete
             />
             <div>
                 <button
-                    type="submit"
                     className="group relative flex w-full justify-center rounded-md border border-transparent bg-emerald-600 py-2 px-4 text-sm font-medium text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+                    type="submit"
                 >
                     Search
                 </button>

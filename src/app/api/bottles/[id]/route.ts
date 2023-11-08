@@ -7,11 +7,11 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { sessionCheck } from "../../session-check";
 
-export const config = {
-    api: {
-        bodyParser: false,
-    },
-};
+// export const config = {
+//     api: {
+//         bodyParser: false,
+//     },
+// };
 
 const handler = async (req: NextRequest) => {
     try {
@@ -82,6 +82,7 @@ const handler = async (req: NextRequest) => {
                     user,
                     type,
                     strength: Number(strength),
+                    //@ts-ignore
                     image: file?.name ?? bottle.image,
                 },
             });

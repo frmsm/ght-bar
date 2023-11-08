@@ -16,16 +16,16 @@ export default function Header({ id }: { id: Item["id"] }) {
     return (
         <div className="flex justify-end px-4 pt-4">
             <button
-                id="dropdownButton"
-                data-dropdown-toggle="dropdown"
-                onMouseDown={toggleSettings}
                 className="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100  focus:ring-4 focus:outline-none focus:ring-gray-200  rounded-lg text-sm p-1.5"
+                data-dropdown-toggle="dropdown"
+                id="dropdownButton"
                 type="button"
+                onMouseDown={toggleSettings}
             >
                 <span className="sr-only">Open dropdown</span>
                 <svg
-                    className="w-6 h-6"
                     aria-hidden="true"
+                    className="w-6 h-6"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -37,16 +37,16 @@ export default function Header({ id }: { id: Item["id"] }) {
                 //@ts-ignore
                 session && session?.user?.isAdmin && (
                     <div
-                        id="dropdown"
                         className={`${
                             !isSettingsOpen ? "hidden" : ""
                         } absolute right-16 z-10 w-44 text-base list-none bg-white rounded divide-y divide-gray-100 shadow `}
+                        id="dropdown"
                     >
-                        <ul className="py-1" aria-labelledby="dropdownButton">
+                        <ul aria-labelledby="dropdownButton" className="py-1">
                             <li>
                                 <a
-                                    href={`/admin/${id}`}
                                     className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100"
+                                    href={`/admin/${id}`}
                                 >
                                     Edit
                                 </a>
@@ -54,6 +54,7 @@ export default function Header({ id }: { id: Item["id"] }) {
 
                             <li>
                                 <a
+                                    className="block py-2 px-4 text-sm text-red-600 hover:bg-gray-100 "
                                     href="#"
                                     onMouseUp={async (e) => {
                                         e.preventDefault();
@@ -77,7 +78,6 @@ export default function Header({ id }: { id: Item["id"] }) {
                                             }
                                         }
                                     }}
-                                    className="block py-2 px-4 text-sm text-red-600 hover:bg-gray-100 "
                                 >
                                     Delete
                                 </a>

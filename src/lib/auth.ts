@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys */
 import bCrypt from "bcrypt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaClient } from "@prisma/client";
@@ -8,7 +9,7 @@ export const authOptions = {
     providers: [
         CredentialsProvider({
             //@ts-ignore
-            authorize: async (credentials, req) => {
+            authorize: async (credentials) => {
                 const username = credentials?.username ?? "";
                 const password = credentials?.password ?? "";
 
@@ -26,12 +27,10 @@ export const authOptions = {
                             user?.password ?? ""
                         );
 
-                        console.log(passwordMatch);
-
                         isLoggedIn = passwordMatch;
-
-                        console.log(user, isLoggedIn);
-                    } catch (e) {}
+                    } catch (e) {
+                        console.error("error", e);
+                    }
                 }
 
                 if (isLoggedIn) {

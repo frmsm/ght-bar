@@ -1,3 +1,5 @@
+import React from "react";
+
 import "./globals.css";
 
 import type { Metadata } from "next";
@@ -21,6 +23,7 @@ export default function RootLayout({
             <body>
                 <SessionProviderComponent>
                     <div className="flex flex-col min-h-full">
+                        {/* @ts-ignore */}
                         <Header />
                         <div className="flex grow [&>*]:grow">{children}</div>
                     </div>

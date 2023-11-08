@@ -1,37 +1,38 @@
+import React from "react";
 import SubmitButton from "./submit-button";
 import FormComponent from "./form-component";
 
 export default function LoginForm() {
     return (
         <FormComponent>
-            <input type="hidden" name="remember" value="true" />
+            <input name="remember" type="hidden" value="true" />
             <div className="-space-y-px rounded-md shadow-sm">
                 <div>
-                    <label htmlFor="email-address" className="sr-only">
+                    <label className="sr-only" htmlFor="email-address">
                         Username
                     </label>
                     <input
+                        autoComplete="username"
+                        className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-emerald-500 focus:outline-none focus:ring-emerald-500 sm:text-sm"
                         id="username"
                         name="username"
-                        type="username"
-                        autoComplete="username"
-                        required
-                        className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-emerald-500 focus:outline-none focus:ring-emerald-500 sm:text-sm"
                         placeholder="Username"
+                        type="username"
+                        required
                     />
                 </div>
                 <div>
-                    <label htmlFor="password" className="sr-only">
+                    <label className="sr-only" htmlFor="password">
                         Password
                     </label>
                     <input
+                        autoComplete="current-password"
+                        className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-emerald-500 focus:outline-none focus:ring-emerald-500 sm:text-sm"
                         id="password"
                         name="password"
-                        type="password"
-                        autoComplete="current-password"
-                        required
-                        className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-emerald-500 focus:outline-none focus:ring-emerald-500 sm:text-sm"
                         placeholder="Password"
+                        type="password"
+                        required
                     />
                 </div>
             </div>

@@ -1,0 +1,12 @@
+version: "1"
+
+services:
+    next-server:
+        build: .
+        image: nextjs
+        container_name: next-server
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./public:/app/public
+        restart: on-failure

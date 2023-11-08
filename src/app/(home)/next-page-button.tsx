@@ -35,9 +35,9 @@ export default function NextPageButton({
 
     return (
         <button
-            onClick={addMoreItems}
-            type="button"
             className="bottom-0 group flex w-full justify-center border border-transparent bg-emerald-600 py-2 px-4 text-sm font-medium text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+            type="button"
+            onClick={addMoreItems}
         >
             more
         </button>

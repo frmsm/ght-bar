@@ -7,11 +7,11 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { sessionCheck } from "../../session-check";
 
-export const config = {
-    api: {
-        bodyParser: false,
-    },
-};
+// export const config = {
+//     api: {
+//         bodyParser: false,
+//     },
+// };
 
 const handler = async (req: NextRequest) => {
     try {

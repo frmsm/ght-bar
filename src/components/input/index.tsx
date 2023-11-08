@@ -1,15 +1,18 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/display-name */
 import React, { InputHTMLAttributes } from "react";
 
 const Input: React.FC<
-    {
-        label?: string;
-        error?: string;
-        autoComplete?: boolean;
-    } & InputHTMLAttributes<HTMLInputElement>
+    | ({
+          label?: string;
+          error?: string;
+          autoComplete?: boolean;
+      } & InputHTMLAttributes<HTMLInputElement>)
+    | any
 > = React.forwardRef(({ label, error, ...rest }, ref) => {
     return (
         <div className="mb-4">
-            <label htmlFor={rest.name} className="sr-only">
+            <label className="sr-only" htmlFor={rest.name}>
                 {label}
             </label>
             <input

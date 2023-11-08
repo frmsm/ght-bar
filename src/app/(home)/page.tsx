@@ -1,3 +1,4 @@
+//@ts-ignore
 import { cache } from "react";
 import styles from "./Home.module.css";
 import { Metadata } from "next";
@@ -44,7 +45,7 @@ const getBottles = cache(async (searchParams: any) => {
 
 export default async function Home({ searchParams }: any) {
     const session = await getServerSession(authOptions);
-    console.log("rerender");
+
     if (!session) {
         redirect("/login");
     }

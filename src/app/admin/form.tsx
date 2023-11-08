@@ -58,7 +58,7 @@ const CreateBottleSchema = z.object({
 
 type CreateBottleSchemaType = z.infer<typeof CreateBottleSchema>;
 
-export default function Form({ item = null }: { item: null | Item }) {
+export default function Form({ item = null }: { item?: null | Item | any }) {
     const { trigger, isMutating, error } = useSWRMutation(
         !item ? "/api/bottles/add" : `/api/bottles/${item.id}`,
         !item ? sendRequest : sendPutRequest /* опции */
@@ -114,57 +114,56 @@ export default function Form({ item = null }: { item: null | Item }) {
             </div>
             <div className=" rounded-md shadow-sm">
                 <Input
-                    label="Name"
                     id="name"
-                    type="text"
+                    label="Name"
                     placeholder="Name"
+                    type="text"
                     required
                     {...register("name")}
                     error={errors.name?.message}
                 />
                 <Input
-                    label="Type"
                     id="type"
-                    type="text"
+                    label="Type"
                     placeholder="Type"
+                    type="text"
                     required
                     {...register("type")}
                     error={errors.type?.message}
                 />
                 <Input
-                    label="Strength"
                     id="strength"
-                    type="number"
-                    type="text"
+                    label="Strength"
                     placeholder="Strength"
+                    type="number"
                     required
                     {...register("strength")}
                     error={errors.strength?.message}
                 />
                 <Input
-                    label="Country"
                     id="countryOrigin"
-                    type="text"
+                    label="Country"
                     placeholder="Country"
+                    type="text"
                     required
                     {...register("countryOrigin")}
                     error={errors.countryOrigin?.message}
                 />
                 <Input
-                    label="User"
                     id="user"
-                    type="text"
+                    label="User"
                     placeholder="User"
+                    type="text"
                     required
                     {...register("user")}
                     error={errors.user?.message}
                 />
                 <Input
                     accept="image/*, .heic"
-                    label="Image"
                     id="image"
-                    type="file"
+                    label="Image"
                     placeholder="Image"
+                    type="file"
                     {...register("image")}
                     error={errors.image?.message}
                 />
@@ -172,8 +171,8 @@ export default function Form({ item = null }: { item: null | Item }) {
             {!isMutating && (
                 <div>
                     <button
-                        type="submit"
                         className="group relative flex w-full justify-center rounded-md border border-transparent bg-emerald-600 py-2 px-4 text-sm font-medium text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+                        type="submit"
                     >
                         Add item
                     </button>

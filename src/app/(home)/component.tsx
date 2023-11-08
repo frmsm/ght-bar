@@ -71,7 +71,7 @@ export default function Component({ bottles }: { bottles: Item[] }) {
                     </div>
                 )}
             </div>
-            <NextPageButton setQuery={setQueryParams} query={queryParams} />
+            <NextPageButton query={queryParams} setQuery={setQueryParams} />
         </>
     );
 }

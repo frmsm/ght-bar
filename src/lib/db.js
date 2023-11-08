@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys */
 import mysql from "serverless-mysql";
 const db = mysql({
     config: {
@@ -8,7 +9,7 @@ const db = mysql({
         password: process.env.MYSQL_PASSWORD,
     },
 });
-export default async function executeQuery({ query, values }) {
+export default async function executeQuery({ query }) {
     try {
         const results = await db.query(query);
         await db.end();

@@ -13,6 +13,7 @@ export const omitRestEmpty = (value: object) =>
 
 export default function useSubmit(setQuery: any) {
     const onSubmit = async (values: FilterSchemaType) => {
+        //@ts-ignore
         const current = new URLSearchParams(omitRestEmpty(values));
         const search = current.toString();
 

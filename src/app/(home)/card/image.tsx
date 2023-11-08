@@ -16,15 +16,15 @@ export default function ImageComponent({
 
     return (
         <Image
-            src={imageUrl}
             alt={name}
-            width={200}
-            height={200}
-            loading="lazy"
-            quality={30}
-            placeholder="blur"
             blurDataURL={defaultImageUrl}
             className="w-40 h-40 rounded-full"
+            height={200}
+            loading="lazy"
+            placeholder="blur"
+            quality={30}
+            src={imageUrl}
+            width={200}
         />
     );
 }

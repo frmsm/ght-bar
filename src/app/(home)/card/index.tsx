@@ -17,19 +17,19 @@ export default function Card({
 }: Item) {
     return (
         <div
-            style={{ width: "296px" }}
             className="w-full relative max-w-sm min-w-fit bg-white rounded-lg border border-gray-200 shadow-md "
+            style={{ width: "296px" }}
         >
             <Header id={id} />
             <div className="flex flex-col items-center pb-10 gap-2">
                 <br />
                 <ImageComponent image={image} name={name} />
                 <Footer
+                    countryOrigin={countryOrigin}
                     name={name}
                     notes={notes}
                     strength={strength}
                     user={user}
-                    countryOrigin={countryOrigin}
                 />
             </div>
         </div>

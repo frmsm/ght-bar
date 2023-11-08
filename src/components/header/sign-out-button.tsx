@@ -3,6 +3,8 @@
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
+import React from "react";
+
 export default function SignOutButton() {
     const router = useRouter();
 
@@ -11,14 +13,16 @@ export default function SignOutButton() {
             await signOut();
 
             router.refresh();
-        } catch (e) {}
+        } catch (e) {
+            console.error("error", e);
+        }
     };
 
     return (
         <div className="cursor-pointer px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75">
             <a
-                onMouseUp={onSignOut}
                 className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
+                onMouseUp={onSignOut}
             >
                 <>
                     <i className="fab fa-pinterest text-lg leading-lg text-white opacity-75"></i>

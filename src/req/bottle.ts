@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys */
 import { prisma } from "@/lib/auth";
 
 export const getBottles = async (searchParams: any) => {

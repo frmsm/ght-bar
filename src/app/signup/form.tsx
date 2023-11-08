@@ -83,54 +83,54 @@ export default function Form() {
                 <Input
                     {...register("email")}
                     autoComplete="email"
-                    label="Email"
-                    id="email"
-                    type="email"
-                    placeholder="Email"
                     error={errors.email?.message}
+                    id="email"
+                    label="Email"
+                    placeholder="Email"
+                    type="email"
                 />
                 <Input
                     {...register("password")}
                     autoComplete="password"
-                    label="Password"
-                    id="password"
-                    type="password"
-                    placeholder="Password"
                     error={errors.password?.message}
+                    id="password"
+                    label="Password"
+                    placeholder="Password"
+                    type="password"
                 />
                 <Input
                     {...register("confirmPassword")}
                     autoComplete="password"
-                    label="Repeat password"
-                    id="confirmPassword"
-                    type="password"
-                    placeholder="Repeat password"
                     error={errors.confirmPassword?.message}
+                    id="confirmPassword"
+                    label="Repeat password"
+                    placeholder="Repeat password"
+                    type="password"
                 />
                 <Input
                     {...register("login")}
                     autoComplete="nickname"
-                    label="login"
-                    id="login"
-                    type="text"
-                    placeholder="Login"
                     error={errors.login?.message}
+                    id="login"
+                    label="login"
+                    placeholder="Login"
+                    type="text"
                 />
                 <Input
                     {...register("name")}
                     autoComplete="username"
-                    label="Name"
+                    error={errors.name?.message}
                     id="name"
-                    type="text"
+                    label="Name"
                     name="name"
                     placeholder="Name"
-                    error={errors.name?.message}
+                    type="text"
                 />
             </div>
             <button
+                className="group relative flex w-full justify-center rounded-md border border-transparent bg-emerald-600 py-2 px-4 text-sm font-medium text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
                 disabled={isMutating}
                 type="submit"
-                className="group relative flex w-full justify-center rounded-md border border-transparent bg-emerald-600 py-2 px-4 text-sm font-medium text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
             >
                 Sign up
             </button>
