@@ -6,7 +6,7 @@ services:
         image: nextjs
         container_name: next-server
         ports:
-            - "3005:3000"
+            - "3000:3000"
         volumes:
             - ../images:/app/public/images
         restart: on-failure
