@@ -14,8 +14,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    # - name: Build the Docker image
-      # run: docker build . --file Dockerfile --tag ${{ vars.NEXTJS_IMAGE }}
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag ${{ vars.NEXTJS_IMAGE }}
     # - name: Save Docker image
       # run: docker save --output image.tar ${{ vars.NEXTJS_IMAGE }}
     # - name: copy file via ssh password
