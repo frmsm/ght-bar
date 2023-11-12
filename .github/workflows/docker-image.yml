@@ -32,4 +32,4 @@ jobs:
         host: ${{ secrets.GHT_HOST }}
         username: ${{ secrets.GHT_LOGIN }}
         password: ${{ secrets.GHT_PASS }}
-        script: cd ${{ vars.NEXT_REPO }} && git pull && docker build -t ${{ vars.DOCKER_IMAGE_NAME }} && docker stop ${{ vars.DOCKER_CONTAINER }} && docker-compose up -d && exit 
+        script: cd ${{ vars.NEXT_REPO }} && git pull && docker build -t . ${{ vars.DOCKER_IMAGE_NAME }} && docker stop ${{ vars.DOCKER_CONTAINER }} && docker-compose up -d && exit 
