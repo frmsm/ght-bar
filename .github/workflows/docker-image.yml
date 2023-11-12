@@ -14,12 +14,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    # - name: Build the Docker image
-      # run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
-    - name: executing remote ssh commands using password
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host: ${{ secrets.GHT_HOST }}
-        username: ${{ secrets.GHT_LOGIN }}
-        password: ${{ secrets.GHT_PASS }}
-        script: cd ${{ vars.NEXT_REPO }} && ls && exit 
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag ${{ vars.NEXTJS_IMAGE }}
+    - name: Save Docker image
+      run: docker save --output image.tar ${{ vars.NEXTJS_IMAGE }}
+    # - name: executing remote ssh commands using password
+      # uses: appleboy/ssh-action@v1.0.0
+      # with:
+        # host: ${{ secrets.GHT_HOST }}
+        # username: ${{ secrets.GHT_LOGIN }}
+        # password: ${{ secrets.GHT_PASS }}
+        # script: cd ${{ vars.NEXT_REPO }} && ls && exit 
