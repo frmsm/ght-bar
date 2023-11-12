@@ -14,12 +14,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+    # - name: Build the Docker image
+      # run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@v1.0.0
       with:
         host: ${{ secrets.GHT_HOST }}
         username: ${{ secrets.GHT_LOGIN }}
         password: ${{ secrets.GHT_PASS }}
-        script: whoami
+        script: touch test-file.txt
