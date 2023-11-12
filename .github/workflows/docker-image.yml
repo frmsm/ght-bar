@@ -26,10 +26,10 @@ jobs:
         # password: ${{ secrets.GHT_PASS }}
         # source: "image.tar"
         # target: ${{ vars.DOCKER_FILE_REPO }}
-    - name: executing remote ssh commands using password
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host: ${{ secrets.GHT_HOST }}
-        username: ${{ secrets.GHT_LOGIN }}
-        password: ${{ secrets.GHT_PASS }}
-        script: cd ${{ vars.NEXT_REPO }} && git pull && docker build -t ${{ vars.DOCKER_IMAGE_NAME }} . && docker stop ${{ vars.DOCKER_CONTAINER }} && docker-compose up -d && exit 
+    # - name: executing remote ssh commands using password
+      # uses: appleboy/ssh-action@v1.0.0
+      # with:
+        # host: ${{ secrets.GHT_HOST }}
+        # username: ${{ secrets.GHT_LOGIN }}
+        # password: ${{ secrets.GHT_PASS }}
+        # script: cd ${{ vars.NEXT_REPO }} && git pull && docker build -t ${{ vars.DOCKER_IMAGE_NAME }} . && docker stop ${{ vars.DOCKER_CONTAINER }} && docker-compose up -d && exit 
