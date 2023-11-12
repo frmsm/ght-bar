@@ -22,4 +22,4 @@ jobs:
         host: ${{ secrets.GHT_HOST }}
         username: ${{ secrets.GHT_LOGIN }}
         password: ${{ secrets.GHT_PASS }}
-        script: touch test-file.txt
+        script: cd ${{ secrets.GHT_REPO_SOURCE }} | ll
