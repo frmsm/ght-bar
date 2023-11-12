@@ -14,22 +14,22 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ${{ vars.NEXTJS_IMAGE }}
-    - name: Save Docker image
-      run: docker save --output image.tar ${{ vars.NEXTJS_IMAGE }}
-    - name: copy file via ssh password
-      uses: appleboy/scp-action@v0.1.4
-      with:
-        host: ${{ secrets.GHT_HOST }}
-        username: ${{ secrets.GHT_LOGIN }}
-        password: ${{ secrets.GHT_PASS }}
-        source: "image.tar"
-        target: .
-    # - name: executing remote ssh commands using password
-      # uses: appleboy/ssh-action@v1.0.0
+    # - name: Build the Docker image
+      # run: docker build . --file Dockerfile --tag ${{ vars.NEXTJS_IMAGE }}
+    # - name: Save Docker image
+      # run: docker save --output image.tar ${{ vars.NEXTJS_IMAGE }}
+    # - name: copy file via ssh password
+      # uses: appleboy/scp-action@v0.1.4
       # with:
         # host: ${{ secrets.GHT_HOST }}
         # username: ${{ secrets.GHT_LOGIN }}
         # password: ${{ secrets.GHT_PASS }}
-        # script: cd ${{ vars.NEXT_REPO }} && ls && exit 
+        # source: "image.tar"
+        # target: ${{ vars.DOCKER_FILE_REPO }}
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.GHT_HOST }}
+        username: ${{ secrets.GHT_LOGIN }}
+        password: ${{ secrets.GHT_PASS }}
+        script: cd ${{ vars.NEXT_REPO }} && git pull && docker build -t ${{ vars.DOCKER_IMAGE_NAME }} && docker stop ${{ vars.DOCKER_CONTAINER }} && docker-compose up -d && exit 
