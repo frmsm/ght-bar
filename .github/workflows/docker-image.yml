@@ -22,4 +22,4 @@ jobs:
         host: ${{ secrets.GHT_HOST }}
         username: ${{ secrets.GHT_LOGIN }}
         password: ${{ secrets.GHT_PASS }}
-        script: cd ${{ vars.NEXT_REPO }} | ls | exit
+        script: cd ${{ vars.NEXT_REPO }} | ls 
