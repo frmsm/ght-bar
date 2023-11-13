@@ -1,49 +1,46 @@
 name: Docker Image CI
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    push:
+        branches: ["main"]
+    pull_request:
+        branches: ["main"]
 
 jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
 
-  build-and-deploy:
+        steps:
+            - uses: actions/checkout@v3
+            - name: Replace variables in .env
+              uses: falnyr/replace-env-vars-action@master
+              env:
+                  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+                  NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+                  MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+                  MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
+                  MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+                  MYSQL_USER: ${{ secrets.MYSQL_USER }}
+                  MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+              with:
+                  filename: .env
+            - name: Build the Docker image
+              run: docker build . --file Dockerfile --tag ${{ vars.NEXTJS_IMAGE }}
+            # - name: Save Docker image
+            # run: docker save --output image.tar ${{ vars.NEXTJS_IMAGE }}
+            # - name: copy file via ssh password
+            #   uses: appleboy/scp-action@v0.1.4
+            #   with:
+            #     host: ${{ secrets.GHT_HOST }}
+            #     username: ${{ secrets.GHT_LOGIN }}
+            #     password: ${{ secrets.GHT_PASS }}
+            #     source: "image.tar"
+            #     target: ${{ vars.DOCKER_FILE_REPO }}
 
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v3
-    - name: Replace variables in .env
-        uses: falnyr/replace-env-vars-action@master
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
-          MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
-          MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
-          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
-          MYSQL_USER: ${{ secrets.MYSQL_USER }}
-          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-        with:
-          filename: .env
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ${{ vars.NEXTJS_IMAGE }}
-    # - name: Save Docker image
-      # run: docker save --output image.tar ${{ vars.NEXTJS_IMAGE }}
-    # - name: copy file via ssh password
-    #   uses: appleboy/scp-action@v0.1.4
-    #   with:
-    #     host: ${{ secrets.GHT_HOST }}
-    #     username: ${{ secrets.GHT_LOGIN }}
-    #     password: ${{ secrets.GHT_PASS }}
-    #     source: "image.tar"
-    #     target: ${{ vars.DOCKER_FILE_REPO }}
-
-    - name: executing remote ssh commands using password
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host: ${{ secrets.GHT_HOST }}
-        username: ${{ secrets.GHT_LOGIN }}
-        password: ${{ secrets.GHT_PASS }}
-        script: cd ${{ vars.NEXT_REPO }} && git pull && docker compose up --build -d && exit 
-
+            - name: executing remote ssh commands using password
+              uses: appleboy/ssh-action@v1.0.0
+              with:
+                  host: ${{ secrets.GHT_HOST }}
+                  username: ${{ secrets.GHT_LOGIN }}
+                  password: ${{ secrets.GHT_PASS }}
+                  script: cd ${{ vars.NEXT_REPO }} && git pull && docker compose up --build -d && exit
