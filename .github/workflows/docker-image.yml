@@ -56,5 +56,6 @@ jobs:
                       echo MYSQL_USER=${{ secrets.MYSQL_USER }} >> .env &&
                       echo MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }} >> .env &&
                       echo NEXT_PUBLIC_SECRET=test_secret >> .env &&
-                      cat .env &&
+                      docker compose up --build -d &&
+                      git checkout . &&
                       exit
