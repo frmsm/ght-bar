@@ -18,20 +18,12 @@ const nextConfig = {
 
         return config;
     },
-
-    // env: {
-    //     MYSQL_HOST: "127.0.0.1",
-    //     MYSQL_PORT: "3306",
-    //     MYSQL_DATABASE: "ght_bar",
-    //     MYSQL_USER: "root",
-    //     MYSQL_PASSWORD: "password",
-    // },
     env: {
-        MYSQL_HOST: "ght.bar",
-        MYSQL_PORT: "3306",
-        MYSQL_DATABASE: "ght_bar",
-        MYSQL_USER: "Developer",
-        MYSQL_PASSWORD: "Developer1902",
+        MYSQL_HOST: process.env.MYSQL_HOST,
+        MYSQL_PORT: process.env.MYSQL_PORT,
+        MYSQL_DATABASE: process.env.MYSQL_DATABASE,
+        MYSQL_USER: process.env.MYSQL_USER,
+        MYSQL_PASSWORD: process.env.MYSQL_PASSWORD,
     },
 };
 
