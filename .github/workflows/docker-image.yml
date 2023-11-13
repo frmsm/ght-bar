@@ -43,4 +43,16 @@ jobs:
                   host: ${{ secrets.GHT_HOST }}
                   username: ${{ secrets.GHT_LOGIN }}
                   password: ${{ secrets.GHT_PASS }}
-                  script: cd ${{ vars.NEXT_REPO }} && git pull && docker compose up --build -d && exit
+                  script: |
+                      cd ${{ vars.NEXT_REPO }} &&
+                      git pull &&
+                      echo DATABASE_URL=${{ secrets.DATABASE_URL }} &&
+                      echo NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }} &&
+                      echo MYSQL_HOST=${{ secrets.MYSQL_HOST }} &&
+                      echo MYSQL_PORT=${{ secrets.MYSQL_PORT }} &&
+                      echo MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }} &&
+                      echo MYSQL_USER=${{ secrets.MYSQL_USER }} &&
+                      echo MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }} &&
+                      docker compose up --build -d &&
+                      git restore . &&
+                      exit
