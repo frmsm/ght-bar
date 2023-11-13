@@ -11,7 +11,7 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v3
+            # - uses: actions/checkout@v3
             # - name: Replace variables in .env
             #   uses: falnyr/replace-env-vars-action@master
             #   env:
@@ -37,7 +37,7 @@ jobs:
             #     password: ${{ secrets.GHT_PASS }}
             #     source: "image.tar"
             #     target: ${{ vars.DOCKER_FILE_REPO }}
-
+            - uses: actions/checkout@v3
             - name: executing remote ssh commands using password
               uses: appleboy/ssh-action@v1.0.0
               with:
@@ -56,6 +56,5 @@ jobs:
                       echo MYSQL_USER=${{ secrets.MYSQL_USER }} >> .env &&
                       echo MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }} >> .env &&
                       echo NEXT_PUBLIC_SECRET=test_secret >> .env &&
-                    # docker compose up --build -d &&
                       git checkout . &&
                       exit
