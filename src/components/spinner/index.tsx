@@ -1,8 +1,8 @@
 import React from "react";
 
-const Spinner = () => {
+const Spinner = ({ screen = "grid h-screen place-items-center" }) => {
     return (
-        <div className="grid h-screen place-items-center">
+        <div className={screen}>
             <div role="status">
                 <svg
                     className="inline mr-2 w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-green-500"
