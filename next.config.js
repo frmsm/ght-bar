@@ -3,6 +3,17 @@ const nextConfig = {
     // reactStrictMode: true,
     swcMinify: true,
 
+    images: {
+        remotePatterns: [
+            {
+                protocol: "http",
+                hostname: "ght.bar",
+                port: "",
+                pathname: "/images/**",
+            },
+        ],
+    },
+
     webpack(config, { isServer }) {
         config.module.rules.push({
             test: /\.svg$/i,

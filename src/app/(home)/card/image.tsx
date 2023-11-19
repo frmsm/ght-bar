@@ -12,7 +12,7 @@ export default function ImageComponent({
 }) {
     const defaultImageUrl = "/images/whiskey.svg";
 
-    const imageUrl = image ? `/images/${image}` : defaultImageUrl;
+    const imageUrl = image ? `http://ght.bar/images/${image}` : defaultImageUrl;
 
     return (
         <Image
