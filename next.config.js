@@ -4,12 +4,13 @@ const nextConfig = {
     swcMinify: true,
 
     images: {
+        disableStaticImages: true,
         remotePatterns: [
             {
                 protocol: "http",
-                hostname: "ght.bar",
+                hostname: "**",
                 port: "",
-                pathname: "/images/**",
+                pathname: "**",
             },
         ],
     },
