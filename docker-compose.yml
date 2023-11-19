@@ -8,5 +8,5 @@ services:
         ports:
             - "3000:3000"
         volumes:
-            - ../images:/app/public/images
+            - /home/shared/images:/app/public/images
         restart: on-failure
