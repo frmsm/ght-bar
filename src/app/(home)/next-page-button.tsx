@@ -1,18 +1,25 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 export default function NextPageButton({
     setQuery,
     query: queryParams,
+    isLoading = false,
+    length,
 }: {
     setQuery: (value: string) => void;
     query: string;
+    isLoading: boolean;
+    length: number;
 }) {
     const searchParams = useSearchParams();
 
-    const addMoreItems = () => {
+    const page = searchParams.get("page");
+    const observerTarget = React.useRef(null);
+
+    const addMoreItems = React.useCallback(() => {
         const current = new URLSearchParams(
             queryParams ? queryParams : Array.from(searchParams.entries())
         );
@@ -31,15 +38,42 @@ export default function NextPageButton({
         window.history.pushState({}, "", query ? query : "/");
 
         setQuery(query);
-    };
+    }, [queryParams]);
+
+    React.useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting) {
+                    !isLoading && addMoreItems();
+                }
+            },
+            { threshold: 0 }
+        );
+
+        if (observerTarget.current) {
+            observer.observe(observerTarget.current);
+        }
+
+        return () => {
+            if (observerTarget.current) {
+                observer.unobserve(observerTarget.current);
+            }
+        };
+    }, [observerTarget, addMoreItems, isLoading]);
+
+    if (page && Number(page) * 20 - length) {
+        return null;
+    }
 
     return (
-        <button
-            className="bottom-0 group flex w-full justify-center border border-transparent bg-emerald-600 py-2 px-4 text-sm font-medium text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
-            type="button"
-            onClick={addMoreItems}
-        >
-            more
-        </button>
+        <div className="bottom-0 group flex w-full justify-center border border-transparent bg-emerald-600 py-2 px-4 text-sm font-medium text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
+            {!isLoading ? (
+                <p key="ref" ref={observerTarget}>
+                    ...
+                </p>
+            ) : (
+                <p key="loading">loading...</p>
+            )}
+        </div>
     );
 }

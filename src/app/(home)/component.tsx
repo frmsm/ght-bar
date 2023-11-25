@@ -4,6 +4,7 @@ import { useState } from "react";
 import useSWR from "swr";
 
 import type { Item } from "@/models/types";
+import { useSearchParams } from "next/navigation";
 
 import Card from "./card";
 import Form from "./filter-form";
@@ -31,12 +32,20 @@ async function sendRequest([url, queryParams = ""]: [string, string]) {
 }
 
 export default function Component({ bottles }: { bottles: Item[] }) {
+    const searchParams = useSearchParams();
+
     const [isFilterOpen, setFilterOpen] = useState(false);
-    const [queryParams, setQueryParams] = useState("");
-    const { data, error } = useSWR([stateKey, queryParams], sendRequest, {
-        fallbackData: bottles,
-        revalidateOnMount: false,
-    });
+    const [queryParams, setQueryParams] = useState(
+        "?" + searchParams.toString()
+    );
+    const { data, error, isLoading } = useSWR(
+        [stateKey, queryParams],
+        sendRequest,
+        {
+            fallbackData: bottles,
+            revalidateOnMount: false,
+        }
+    );
 
     return (
         <>
@@ -71,7 +80,12 @@ export default function Component({ bottles }: { bottles: Item[] }) {
                     </div>
                 )}
             </div>
-            <NextPageButton query={queryParams} setQuery={setQueryParams} />
+            <NextPageButton
+                isLoading={isLoading}
+                query={queryParams}
+                setQuery={setQueryParams}
+                length={data.length}
+            />
         </>
     );
 }
