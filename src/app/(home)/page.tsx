@@ -30,7 +30,9 @@ const getBottles = cache(async (searchParams: any) => {
         take = (page + 1) * 20;
     }
 
-    return await prisma?.items.findMany({
+    const bottlesCount = await prisma.items.count();
+
+    const bottles = await prisma?.items.findMany({
         where: {
             ...(strength ? { strength: Number(strength) } : {}),
             ...(name ? { name: { contains: name } } : {}),
@@ -41,6 +43,8 @@ const getBottles = cache(async (searchParams: any) => {
         },
         take,
     });
+
+    return { count: bottlesCount, items: bottles };
 });
 
 export default async function Home({ searchParams }: any) {
@@ -54,7 +58,7 @@ export default async function Home({ searchParams }: any) {
 
     return (
         <div className={styles.container}>
-            <Component bottles={bottles} />
+            <Component bottles={bottles.items} count={bottles.count} />
         </div>
     );
 }

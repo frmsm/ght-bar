@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import useSWR from "swr";
+import useSWRInfinite from "swr/infinite";
 
 import type { Item } from "@/models/types";
 import { useSearchParams } from "next/navigation";
@@ -14,8 +14,8 @@ import NextPageButton from "./next-page-button";
 
 export const stateKey = "/api/bottles";
 
-async function sendRequest([url, queryParams = ""]: [string, string]) {
-    const res = await fetch(`${url}${queryParams}`);
+async function sendRequest(url: string) {
+    const res = await fetch(url);
 
     if (!res.ok) {
         const error: any = new Error(
@@ -31,21 +31,33 @@ async function sendRequest([url, queryParams = ""]: [string, string]) {
     return res.json();
 }
 
-export default function Component({ bottles }: { bottles: Item[] }) {
+const getKey = (pageIndex: number, previousPageData: string | any[]) => {
+    return `/api/bottles/v2?page=${pageIndex}`; // ключ SWR
+};
+
+export default function Component({
+    bottles,
+    count,
+}: {
+    bottles: Item[];
+    count: number;
+}) {
     const searchParams = useSearchParams();
 
     const [isFilterOpen, setFilterOpen] = useState(false);
     const [queryParams, setQueryParams] = useState(
         "?" + searchParams.toString()
     );
-    const { data, error, isLoading } = useSWR(
-        [stateKey, queryParams],
-        sendRequest,
-        {
+
+    const { data, size, setSize, isValidating, isLoading, error } =
+        useSWRInfinite(getKey, sendRequest, {
             fallbackData: bottles,
             revalidateOnMount: false,
-        }
-    );
+        });
+
+    const b = data ? [].concat(...data) : [];
+
+    const update = () => setSize(size + 1);
 
     return (
         <>
@@ -72,7 +84,7 @@ export default function Component({ bottles }: { bottles: Item[] }) {
                     </div>
                 ) : (
                     <div className="flex  flex-wrap  gap-8 justify-center">
-                        {data?.map((bottle: Item) => {
+                        {b?.map((bottle: Item) => {
                             return (
                                 <Card key={bottle.id.toString()} {...bottle} />
                             );
@@ -80,12 +92,14 @@ export default function Component({ bottles }: { bottles: Item[] }) {
                     </div>
                 )}
             </div>
-            <NextPageButton
-                isLoading={isLoading}
-                query={queryParams}
-                setQuery={setQueryParams}
-                length={data.length}
-            />
+            {count > b.length ? (
+                <NextPageButton
+                    isLoading={isLoading || isValidating}
+                    query={queryParams}
+                    setQuery={setQueryParams}
+                    update={update}
+                />
+            ) : null}
         </>
     );
 }
