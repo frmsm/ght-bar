@@ -7,15 +7,11 @@ export default function NextPageButton({
     // setQuery,
     // query: queryParams,
     isLoading = false,
-    // length,
-    // count,
     update,
 }: {
     setQuery: (value: string) => void;
     query: string;
     isLoading: boolean;
-    // length: number;
-    // count: number;
     update: any;
 }) {
     // const searchParams = useSearchParams();
@@ -64,10 +60,6 @@ export default function NextPageButton({
             }
         };
     }, [observerTarget, isLoading]);
-
-    // if (!count || length >= count) {
-    //     return null;
-    // }
 
     return (
         <div className="bottom-0 group flex w-full justify-center border border-transparent bg-emerald-600 py-2 px-4 text-sm font-medium text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
