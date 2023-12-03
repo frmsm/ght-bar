@@ -21,7 +21,7 @@ export default async function Header() {
                                 className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white"
                                 href="/"
                             >
-                                GHT-BAR
+                                Борматухи GHT
                             </Link>
                         </div>
                         <div
