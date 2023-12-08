@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 
 import type { Item } from "@/models/types";
@@ -31,33 +31,47 @@ async function sendRequest(url: string) {
     return res.json();
 }
 
-const getKey = (pageIndex: number, previousPageData: string | any[]) => {
-    return `/api/bottles/v2?page=${pageIndex}`; // ключ SWR
-};
-
 export default function Component({
     bottles,
-    count,
+    count: initialCount,
 }: {
     bottles: Item[];
     count: number;
 }) {
     const searchParams = useSearchParams();
+    const page = Number(searchParams.get("page")) || 0;
 
     const [isFilterOpen, setFilterOpen] = useState(false);
-    const [queryParams, setQueryParams] = useState(
-        "?" + searchParams.toString()
-    );
 
+    const getKey = (pageIndex: number, previousPageData: string | any[]) => {
+        //@ts-ignore
+        if (previousPageData && !previousPageData?.items) return null;
+
+        const params = new URLSearchParams(searchParams.toString());
+
+        const page = Number(params.get("page"));
+        if (!page || typeof page !== "number") {
+            params.set("page", pageIndex.toString());
+        } else {
+            params.set("page", Number(page + pageIndex).toString());
+        }
+
+        return `/api/bottles/v2?${params.toString()}`; // ключ SWR
+    };
+
+    //изнаачально неправильно определяется идекс
     const { data, size, setSize, isValidating, isLoading, error } =
         useSWRInfinite(getKey, sendRequest, {
-            fallbackData: bottles,
+            fallbackData: [{ items: bottles }],
             revalidateOnMount: false,
+            revalidateFirstPage: false,
         });
 
-    const b = data ? [].concat(...data) : [];
+    const b = data ? [].concat(...data.map((it) => it.items)) : [];
 
     const update = () => setSize(size + 1);
+
+    const count = data && data[0].count ? data[0].count : initialCount;
 
     return (
         <>
@@ -73,7 +87,7 @@ export default function Component({
                         isFilterOpen ? "md:h-400" : "md:h-0"
                     }`}
                 >
-                    <Form setQuery={setQueryParams} />
+                    <Form />
                 </div>
             </div>
             <div className="p-8">
@@ -92,11 +106,9 @@ export default function Component({
                     </div>
                 )}
             </div>
-            {count > b.length ? (
+            {count > b.length && ((data?.length || 0) + 1) * 20 < count ? (
                 <NextPageButton
                     isLoading={isLoading || isValidating}
-                    query={queryParams}
-                    setQuery={setQueryParams}
                     update={update}
                 />
             ) : null}

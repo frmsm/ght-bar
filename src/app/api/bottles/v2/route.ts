@@ -12,17 +12,21 @@ const handler = async (req: NextRequest) => {
     const user = searchParams.get("user") || "";
     const page = Number(searchParams.get("page") || 0);
 
-    const bottlesCount = await prisma.items.count();
+    const where = {
+        ...(strength ? { strength: Number(strength) } : {}),
+        ...(name ? { name: { contains: name } } : {}),
+        ...(countryOrigin
+            ? { countryOrigin: { contains: countryOrigin } }
+            : {}),
+        ...(user ? { user: { contains: user } } : {}),
+    };
+
+    const bottlesCount = await prisma.items.count({
+        where,
+    });
 
     const bottles = await prisma.items.findMany({
-        where: {
-            ...(strength ? { strength: Number(strength) } : {}),
-            ...(name ? { name: { contains: name } } : {}),
-            ...(countryOrigin
-                ? { countryOrigin: { contains: countryOrigin } }
-                : {}),
-            ...(user ? { user: { contains: user } } : {}),
-        },
+        where,
         skip: page * 20,
         take: 20,
     });
@@ -32,7 +36,7 @@ const handler = async (req: NextRequest) => {
         items: bottles,
     };
 
-    return NextResponse.json(result.items, {
+    return NextResponse.json(result, {
         status: 200,
     });
 };

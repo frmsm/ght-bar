@@ -3,6 +3,7 @@ import isNumber from "lodash-es/isNumber";
 import isEmpty from "lodash-es/isEmpty";
 
 import { FilterSchemaType } from ".";
+import { useRouter } from "next/navigation";
 
 export const omitRestEmpty = (value: object) =>
     pickBy(
@@ -12,6 +13,7 @@ export const omitRestEmpty = (value: object) =>
     );
 
 export default function useSubmit(setQuery: any) {
+    const router = useRouter();
     const onSubmit = async (values: FilterSchemaType) => {
         //@ts-ignore
         const current = new URLSearchParams(omitRestEmpty(values));
@@ -19,8 +21,7 @@ export default function useSubmit(setQuery: any) {
 
         const query = search ? `?${search}` : "";
 
-        window.history.pushState({}, "", query ? query : "/");
-        setQuery(query);
+        router.push(query, { scroll: false });
     };
 
     return onSubmit;

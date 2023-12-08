@@ -58,6 +58,7 @@
         "@types/uuid": "^8.3.4",
         "eslint": "^8.49.0",
         "eslint-plugin-react": "^7.33.2",
+        "prettier-plugin-tailwindcss": "^0.5.9",
         "prisma": "^5.2.0"
     },
     "repository": {

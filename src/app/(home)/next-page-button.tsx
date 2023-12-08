@@ -1,50 +1,47 @@
 "use client";
 
-import React, { useState } from "react";
-// import { useSearchParams } from "next/navigation";
+import { debounce } from "lodash-es";
+import React from "react";
 
 export default function NextPageButton({
-    // setQuery,
-    // query: queryParams,
     isLoading = false,
     update,
 }: {
-    setQuery: (value: string) => void;
-    query: string;
     isLoading: boolean;
     update: any;
 }) {
-    // const searchParams = useSearchParams();
-
-    // const page = searchParams.get("page");
     const observerTarget = React.useRef(null);
 
-    // const addMoreItems = React.useCallback(() => {
-    //     const current = new URLSearchParams(
-    //         queryParams ? queryParams : Array.from(searchParams.entries())
-    //     );
+    const addMoreItems = debounce(() => {
+        const current = new URLSearchParams(window.location.search);
+        const page = current.get("page");
 
-    //     const page = current.get("page");
+        if (Number(page)) {
+            current.delete("page");
+            current.set("page", (Number(page) + 1).toString());
+        } else {
+            current.set("page", "1");
+        }
 
-    //     if (Number(page)) {
-    //         current.delete("page");
-    //         current.set("page", (Number(page) + 1).toString());
-    //     } else {
-    //         current.set("page", "1");
-    //     }
+        const search = current.toString();
 
-    //     const search = current.toString();
-    //     const query = search ? `?${search}` : "";
-    //     window.history.pushState({}, "", query ? query : "/");
+        const query = search ? `?${search}` : "";
+        // window.history.pushState({}, "", query ? query : "/");
 
-    //     setQuery(query);
-    // }, [queryParams]);
+        window.history.replaceState(
+            { ...window.history.state, as: query, url: query },
+            "",
+            query
+        );
+
+        update();
+    }, 300);
 
     React.useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
                 if (entries[0].isIntersecting) {
-                    !isLoading && update();
+                    !isLoading && addMoreItems();
                 }
             },
             { threshold: 0 }

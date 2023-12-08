@@ -24,24 +24,23 @@ const getBottles = cache(async (searchParams: any) => {
     const user = searchParams.user;
     const page = Number(searchParams.page || 0);
 
-    let take = 20;
+    const where = {
+        ...(strength ? { strength: Number(strength) } : {}),
+        ...(name ? { name: { contains: name } } : {}),
+        ...(countryOrigin
+            ? { countryOrigin: { contains: countryOrigin } }
+            : {}),
+        ...(user ? { user: { contains: user } } : {}),
+    };
 
-    if (page) {
-        take = (page + 1) * 20;
-    }
-
-    const bottlesCount = await prisma.items.count();
+    const bottlesCount = await prisma.items.count({
+        where,
+    });
 
     const bottles = await prisma?.items.findMany({
-        where: {
-            ...(strength ? { strength: Number(strength) } : {}),
-            ...(name ? { name: { contains: name } } : {}),
-            ...(countryOrigin
-                ? { countryOrigin: { contains: countryOrigin } }
-                : {}),
-            ...(user ? { user: { contains: user } } : {}),
-        },
-        take,
+        where,
+        skip: page * 20,
+        take: 20,
     });
 
     return { count: bottlesCount, items: bottles };
