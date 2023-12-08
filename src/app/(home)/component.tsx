@@ -106,12 +106,12 @@ export default function Component({
                     </div>
                 )}
             </div>
-            {count > b.length && ((data?.length || 0) + 1) * 20 < count ? (
+            {(page + size) * 20 < count && (
                 <NextPageButton
                     isLoading={isLoading || isValidating}
                     update={update}
                 />
-            ) : null}
+            )}
         </>
     );
 }
