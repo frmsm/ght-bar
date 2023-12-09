@@ -17,7 +17,8 @@ export default function Card({
 }: Item) {
     return (
         <div
-            className="hover:scale-105 hover:transition-transform w-full relative max-w-sm min-w-fit bg-white rounded-lg border border-gray-200 shadow-md "
+            id={id.toString()}
+            className={`card-element hover:scale-105 transition-transform w-full relative max-w-sm min-w-fit bg-white rounded-lg border border-gray-200 shadow-md `}
             style={{ width: "296px" }}
         >
             <Header id={id} />

@@ -1,16 +1,16 @@
 "use client";
 
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 
 import type { Item } from "@/models/types";
 import { useSearchParams } from "next/navigation";
 
-import Card from "./card";
 import Form from "./filter-form";
 
 import WhiskeyComponent from "@/components/whiskey";
 import NextPageButton from "./next-page-button";
+import Items from "./items";
 
 export const stateKey = "/api/bottles";
 
@@ -97,13 +97,7 @@ export default function Component({
                         <h3 className="font-bold">Error</h3>
                     </div>
                 ) : (
-                    <div className="flex  flex-wrap  gap-8 justify-center">
-                        {b?.map((bottle: Item) => {
-                            return (
-                                <Card key={bottle.id.toString()} {...bottle} />
-                            );
-                        })}
-                    </div>
+                    <Items bottles={b} />
                 )}
             </div>
             {(page + size) * 20 < count && (
