@@ -1,16 +1,15 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React from "react";
 import useSWRInfinite from "swr/infinite";
 
 import type { Item } from "@/models/types";
 import { useSearchParams } from "next/navigation";
 
-import Form from "./filter-form";
-
 import WhiskeyComponent from "@/components/whiskey";
 import NextPageButton from "./next-page-button";
 import Items from "./items";
+import FilterController from "./filter-controller";
 
 export const stateKey = "/api/bottles";
 
@@ -40,8 +39,6 @@ export default function Component({
 }) {
     const searchParams = useSearchParams();
     const page = Number(searchParams.get("page")) || 0;
-
-    const [isFilterOpen, setFilterOpen] = useState(false);
 
     const getKey = (pageIndex: number, previousPageData: string | any[]) => {
         //@ts-ignore
@@ -75,21 +72,7 @@ export default function Component({
 
     return (
         <>
-            <div
-                className="h-6 justify-center hidden md:flex font-bold"
-                onClick={() => setFilterOpen((prev) => !prev)}
-            >
-                {isFilterOpen ? "Hide filter" : "Show filter"}
-            </div>
-            <div className="p-4">
-                <div
-                    className={`truncate ${
-                        isFilterOpen ? "md:h-400" : "md:h-0"
-                    }`}
-                >
-                    <Form />
-                </div>
-            </div>
+            <FilterController />
             <div className="p-8">
                 {error ? (
                     <div className="flex flex-col items-center content-around justify-center">
