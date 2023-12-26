@@ -84,7 +84,7 @@ export default function Form({ setQuery }: any) {
                 autoComplete
             />
             <button
-                className="w-20 h-11 group relative flex justify-center rounded-md border border-transparent bg-emerald-600 py-2 px-4 text-sm font-medium text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+                className="w-20 h-11 group relative flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
                 type="submit"
             >
                 Search
