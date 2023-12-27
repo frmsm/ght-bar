@@ -35,7 +35,7 @@ const handler = async (req: NextRequest) => {
 
                 return NextResponse.json(
                     {
-                        message: `Ittem ${id} has deleted`,
+                        message: `Item ${id} has deleted`,
                     },
                     {
                         status: 200,

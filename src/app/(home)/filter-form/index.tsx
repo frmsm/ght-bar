@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
+import { Button } from "@radix-ui/themes";
+
 import { useSearchParams } from "next/navigation";
 
 import Input from "@/components/input";
@@ -43,7 +45,9 @@ export default function Form({ setQuery }: any) {
     return (
         <form
             className="flex justify-center 
+            items-baseline
             sm:flex-col
+            sm:items-stretch
              gap-x-4"
             onSubmit={handleSubmit(onSubmit)}
         >
@@ -83,12 +87,14 @@ export default function Form({ setQuery }: any) {
                 type="text"
                 autoComplete
             />
-            <button
-                className="w-20 h-11 group relative flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
-                type="submit"
+            <Button
+                size="3"
+                variant="solid"
+                // className="w-20 h-11 group relative flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+                // type="submit"
             >
                 Search
-            </button>
+            </Button>
         </form>
     );
 }
