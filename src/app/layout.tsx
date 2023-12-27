@@ -1,8 +1,11 @@
 import React from "react";
 
+import "@radix-ui/themes/styles.css";
 import "./globals.css";
 
 import type { Metadata } from "next";
+
+import { Theme } from "@radix-ui/themes";
 
 import Header from "@/components/header";
 import SessionProviderComponent from "./session-provider";
@@ -21,14 +24,18 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className="bg-blue-100">
-                <SessionProviderComponent>
-                    <div className="flex flex-col min-h-full">
-                        {/* @ts-ignore */}
-                        <Header />
-                        <div className="flex grow [&>*]:grow">{children}</div>
-                    </div>
-                </SessionProviderComponent>
-                <Toast />
+                <Theme>
+                    <SessionProviderComponent>
+                        <div className="flex flex-col min-h-full">
+                            {/* @ts-ignore */}
+                            <Header />
+                            <div className="flex grow [&>*]:grow">
+                                {children}
+                            </div>
+                        </div>
+                    </SessionProviderComponent>
+                    <Toast />
+                </Theme>
             </body>
         </html>
     );
