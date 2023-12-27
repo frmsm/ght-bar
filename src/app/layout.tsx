@@ -1,7 +1,7 @@
 import React from "react";
 
-import "@radix-ui/themes/styles.css";
 import "./globals.css";
+import "@radix-ui/themes/styles.css";
 
 import type { Metadata } from "next";
 

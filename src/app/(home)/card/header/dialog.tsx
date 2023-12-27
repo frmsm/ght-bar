@@ -1,13 +1,6 @@
 "use client";
 
-import {
-    Dialog,
-    Button,
-    TextField,
-    AlertDialog,
-    Flex,
-    Text,
-} from "@radix-ui/themes";
+import { Button, AlertDialog, Flex } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
@@ -64,7 +57,7 @@ export default function DeleteDialog({
 
         <AlertDialog.Root>
             <AlertDialog.Trigger>
-                <a className="block text-sm text-red-600 hover:bg-gray-100 ">
+                <a className="block px-4 py-2 cursor-pointer text-sm text-red-600 hover:bg-gray-100 ">
                     Delete
                 </a>
             </AlertDialog.Trigger>
@@ -95,7 +88,9 @@ export default function DeleteDialog({
                                         "Ты только что удалил бутылку бормотухи. Ну что ты за криворукий? Фотка осталась, кстати("
                                     );
 
-                                    router.refresh();
+                                    setTimeout(() => {
+                                        router.refresh();
+                                    }, 300);
                                 } catch {
                                     toast.error("Ниче не удалилось");
                                 }
