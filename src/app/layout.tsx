@@ -1,8 +1,6 @@
 import React from "react";
 
 import "./globals.css";
-import "@radix-ui/themes/styles.css";
-
 import type { Metadata } from "next";
 
 import { Theme } from "@radix-ui/themes";
@@ -24,8 +22,8 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className="bg-blue-100">
-                <Theme>
-                    <SessionProviderComponent>
+                <SessionProviderComponent>
+                    <Theme>
                         <div className="flex flex-col min-h-full">
                             {/* @ts-ignore */}
                             <Header />
@@ -33,9 +31,9 @@ export default function RootLayout({
                                 {children}
                             </div>
                         </div>
-                    </SessionProviderComponent>
-                    <Toast />
-                </Theme>
+                    </Theme>
+                </SessionProviderComponent>
+                <Toast />
             </body>
         </html>
     );
