@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
 import useSWRMutation from "swr/mutation";
 import { useForm } from "react-hook-form";
@@ -63,15 +63,17 @@ const CreateBottleSchema = z.object({
 type CreateBottleSchemaType = z.infer<typeof CreateBottleSchema>;
 
 export default function Form({ item = null }: { item?: null | Item | any }) {
+    const [show, setShow] = useState(false);
     const defaultValues = item ? { ...item, image: null } : {};
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isDirty },
         reset,
+        trigger: triggerForm,
     } = useForm<CreateBottleSchemaType>({
         resolver: zodResolver(CreateBottleSchema),
-        mode: "onChange",
+        // mode: "onChange",
         defaultValues,
     });
 
@@ -121,6 +123,13 @@ export default function Form({ item = null }: { item?: null | Item | any }) {
 
     return (
         <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
+            <div
+                className={`flex justify-center ${
+                    show ? "visible" : "invisible h-0"
+                }`}
+            >
+                <img className={`w-40 h-40 rounded-full`} id="output" />
+            </div>
             <div className="flex justify-center text-rose-400">
                 <div>{error && error.info ? error.info.message : null}</div>
             </div>
@@ -190,6 +199,17 @@ export default function Form({ item = null }: { item?: null | Item | any }) {
                     type="file"
                     {...register("image")}
                     error={errors.image?.message}
+                    onChange={(event: any) => {
+                        setShow(true);
+                        const output = document.getElementById("output");
+                        //@ts-ignore
+                        output.src = URL.createObjectURL(event.target.files[0]);
+                        //@ts-ignore
+                        output.onload = function () {
+                            //@ts-ignore
+                            URL.revokeObjectURL(output?.src); // free memory
+                        };
+                    }}
                 />
             </div>
             {!isMutating ? (
