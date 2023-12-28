@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/auth";
 
-import { writeFile } from "fs/promises";
+import { writeFile, unlink } from "fs/promises";
 import path from "path";
 
 import { NextResponse, type NextRequest } from "next/server";
@@ -28,6 +28,14 @@ const handler = async (req: NextRequest) => {
         if (req.method === "DELETE") {
             try {
                 if (bottle) {
+                    if (bottle.image) {
+                        unlink(
+                            `${path.join(process.cwd(), "/public/images")}/${
+                                bottle.image
+                            }`
+                        );
+                    }
+
                     await prisma.items.delete({
                         where: { id: Number(id) },
                     });
