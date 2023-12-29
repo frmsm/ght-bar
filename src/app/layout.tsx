@@ -21,7 +21,7 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en">
-            <body className="bg-blue-100">
+            <body className="bg-slate-100">
                 <SessionProviderComponent>
                     <Theme>
                         <div className="flex flex-col min-h-full">

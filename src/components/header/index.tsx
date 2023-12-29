@@ -14,7 +14,7 @@ export default async function Header() {
     return (
         <header className="sticky top-0 w-full z-50">
             <div>
-                <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-blue-950 mb-3">
+                <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-slate-950 mb-3">
                     <div className="container px-4 mx-auto flex flex-row flex-wrap items-center justify-between">
                         <div className="relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
                             <Link

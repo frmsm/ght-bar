@@ -215,7 +215,7 @@ export default function Form({ item = null }: { item?: null | Item | any }) {
             {!isMutating ? (
                 <div>
                     <button
-                        className="group relative flex w-full justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+                        className="group relative flex w-full justify-center rounded-md border border-transparent bg-slate-600 py-2 px-4 text-sm font-medium text-white hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
                         type="submit"
                     >
                         Add item
