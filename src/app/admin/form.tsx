@@ -69,8 +69,8 @@ export default function Form({
     types = [],
 }: {
     item?: null | Item | any;
-    users: string[] | null;
-    types: string[] | null;
+    users?: (string | null)[];
+    types?: (string | null)[];
 }) {
     const [show, setShow] = useState(false);
     const defaultValues = item ? { ...item, image: null } : {};
@@ -175,7 +175,7 @@ export default function Form({
                 >
                     <option value="">-- Выбери тип бормотухи --</option>
                     {types?.map((type) => (
-                        <option key={type} value={type}>
+                        <option key={type} value={type?.toString()}>
                             {type}
                         </option>
                     ))}
@@ -219,7 +219,7 @@ export default function Form({
                 >
                     <option value="">-- Выбери юзера --</option>
                     {users?.map((user) => (
-                        <option key={user} value={user}>
+                        <option key={user} value={user?.toString()}>
                             {user}
                         </option>
                     ))}
