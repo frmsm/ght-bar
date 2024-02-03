@@ -13,6 +13,7 @@ export default function Card({
     strength,
     user,
     countryOrigin,
+    type,
     id,
 }: Item) {
     return (
@@ -31,6 +32,7 @@ export default function Card({
                     notes={notes}
                     strength={strength}
                     user={user}
+                    type={type}
                 />
             </div>
         </div>

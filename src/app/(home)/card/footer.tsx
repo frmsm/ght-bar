@@ -13,17 +13,22 @@ export default function Footer({
     strength,
     user,
     countryOrigin,
+    type,
 }: {
     name: Item["name"];
     notes: Item["notes"];
     strength: Item["strength"];
     user: Item["user"];
     countryOrigin: Item["countryOrigin"];
+    type: Item["type"];
 }) {
     return (
         <>
             <h5 className="mb-1 text-xl font-medium text-gray-900 ">{name}</h5>
             <ul className="flex flex-col items-center pb-10">
+                <li className="text-sm text-gray-500 ">
+                    <Link href={`/?type=${type}`}>{type}</Link>
+                </li>
                 <li className="text-sm text-gray-500 ">
                     <Link href={`/?strength=${strength}`}>{strength} %</Link>
                 </li>

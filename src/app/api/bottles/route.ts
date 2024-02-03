@@ -11,6 +11,7 @@ const handler = async (req: NextRequest) => {
     const countryOrigin = searchParams.get("countryOrigin") || "";
     const user = searchParams.get("user") || "";
     const page = Number(searchParams.get("page") || 0);
+    const type = searchParams.get("type") || "";
 
     let take = 20;
 
@@ -26,6 +27,7 @@ const handler = async (req: NextRequest) => {
                 ? { countryOrigin: { contains: countryOrigin } }
                 : {}),
             ...(user ? { user: { contains: user } } : {}),
+            ...(type ? { type: { contains: type } } : {}),
         },
         take,
     });
