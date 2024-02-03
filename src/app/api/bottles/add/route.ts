@@ -42,7 +42,7 @@ const handler = async (req: NextRequest) => {
                 user,
                 type,
                 strength: Number(strength),
-                image: file.name ?? "",
+                image: file?.name ?? "",
             },
         });
 

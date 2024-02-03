@@ -73,7 +73,7 @@ export default function Component({
     return (
         <>
             <FilterController />
-            <div className="p-8">
+            <div className="flex p-8 justify-around">
                 {error ? (
                     <div className="flex flex-col items-center content-around justify-center">
                         <WhiskeyComponent />

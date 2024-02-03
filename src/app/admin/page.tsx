@@ -3,12 +3,20 @@ import React from "react";
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 
-import { authOptions } from "@/lib/auth";
+import { authOptions, prisma } from "@/lib/auth";
 
 import Form from "./form";
 
 export default async function Admin() {
     const session = await getServerSession(authOptions);
+
+    const users = await prisma.users.findMany({ select: { username: true } });
+    const usersArray = users
+        ?.map((user) => user.username)
+        ?.filter((user) => user !== "admin");
+
+    const types = await prisma.types.findMany({ select: { type: true } });
+    const typesArray = types?.map((type) => type.type);
 
     if (!session || !session?.user?.isAdmin) {
         redirect("/");
@@ -22,7 +30,7 @@ export default async function Admin() {
                         Add борматуха page
                     </h2>
                 </div>
-                <Form />
+                <Form users={usersArray} types={typesArray} />
             </div>
         </div>
     );

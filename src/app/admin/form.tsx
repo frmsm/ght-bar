@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import useSWRMutation from "swr/mutation";
@@ -62,7 +63,15 @@ const CreateBottleSchema = z.object({
 
 type CreateBottleSchemaType = z.infer<typeof CreateBottleSchema>;
 
-export default function Form({ item = null }: { item?: null | Item | any }) {
+export default function Form({
+    item = null,
+    users = [],
+    types = [],
+}: {
+    item?: null | Item | any;
+    users: string[] | null;
+    types: string[] | null;
+}) {
     const [show, setShow] = useState(false);
     const defaultValues = item ? { ...item, image: null } : {};
     const {
@@ -87,6 +96,8 @@ export default function Form({ item = null }: { item?: null | Item | any }) {
         !item ? sendRequest : sendPutRequest
     );
 
+    const [isFileFormatting, setIsFileFormatting] = useState(false);
+
     const onSubmit = async (values: any) => {
         try {
             const formData = new FormData();
@@ -98,16 +109,28 @@ export default function Form({ item = null }: { item?: null | Item | any }) {
             formData.append("user", values.user);
 
             if (values.image && values.image.length > 0) {
+                setIsFileFormatting(true);
                 let newImage = values.image[0];
+
+                const name = values.image[0]?.name?.split(".")?.[0];
 
                 if (values.image[0].type === "image/heic") {
                     const heic2any = (await import("heic2any")).default;
 
-                    newImage = await heic2any({ blob: values.image[0] });
+                    newImage = await heic2any({
+                        blob: values.image[0],
+                    }).then(
+                        (blob) =>
+                            //@ts-ignore
+                            new File([blob], name + ".png", {
+                                type: "image/png",
+                            })
+                    );
                 }
 
                 formData.append("image", newImage);
             }
+            setIsFileFormatting(false);
 
             await trigger(formData);
 
@@ -143,25 +166,30 @@ export default function Form({ item = null }: { item?: null | Item | any }) {
                     {...register("name")}
                     error={errors.name?.message}
                 />
-                <Input
+                <select
+                    className="mb-4 relative block w-full  appearance-none rounded-none rounded-t-md rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-emerald-500 focus:outline-none focus:ring-emerald-500 sm:text-sm"
                     id="type"
-                    label="Type"
-                    placeholder="Type"
-                    type="text"
-                    required
                     {...register("type")}
-                    error={errors.type?.message}
-                />
+                    // onError={errors.type?.message}
+                    required
+                >
+                    <option value="">-- Выбери тип бормотухи --</option>
+                    {types?.map((type) => (
+                        <option key={type} value={type}>
+                            {type}
+                        </option>
+                    ))}
+                </select>
                 <Input
                     id="strength"
                     label="Strength"
                     placeholder="Strength"
                     type="number"
+                    step="0.01"
                     required
                     {...register("strength")}
                     error={errors.strength?.message}
                 />
-
                 <select
                     className="mb-4 relative block w-full  appearance-none rounded-none rounded-t-md rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-emerald-500 focus:outline-none focus:ring-emerald-500 sm:text-sm"
                     id="origin"
@@ -182,15 +210,20 @@ export default function Form({ item = null }: { item?: null | Item | any }) {
                         </option>
                     ))}
                 </select>
-                <Input
+                <select
+                    className="mb-4 relative block w-full  appearance-none rounded-none rounded-t-md rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-emerald-500 focus:outline-none focus:ring-emerald-500 sm:text-sm"
                     id="user"
-                    label="User"
-                    placeholder="User"
-                    type="text"
-                    required
                     {...register("user")}
-                    error={errors.user?.message}
-                />
+                    // error={errors.user?.message}
+                    required
+                >
+                    <option value="">-- Выбери юзера --</option>
+                    {users?.map((user) => (
+                        <option key={user} value={user}>
+                            {user}
+                        </option>
+                    ))}
+                </select>
                 <Input
                     accept="image/*, .heic"
                     id="image"
@@ -199,11 +232,24 @@ export default function Form({ item = null }: { item?: null | Item | any }) {
                     type="file"
                     {...register("image")}
                     error={errors.image?.message}
-                    onChange={(event: any) => {
+                    onChange={async (event: any) => {
                         setShow(true);
+                        let newImage = event.target.files[0];
+
+                        if (event.target.files[0].type === "image/heic") {
+                            setIsFileFormatting(true);
+                            const heic2any = (await import("heic2any")).default;
+
+                            newImage = await heic2any({
+                                blob: event.target.files[0],
+                                toType: "image/png",
+                            });
+                            setIsFileFormatting(false);
+                        }
+
                         const output = document.getElementById("output");
                         //@ts-ignore
-                        output.src = URL.createObjectURL(event.target.files[0]);
+                        output.src = URL.createObjectURL(newImage);
                         //@ts-ignore
                         output.onload = function () {
                             //@ts-ignore
@@ -212,7 +258,7 @@ export default function Form({ item = null }: { item?: null | Item | any }) {
                     }}
                 />
             </div>
-            {!isMutating ? (
+            {!isMutating && !isFileFormatting ? (
                 <div>
                     <button
                         className="group relative flex w-full justify-center rounded-md border border-transparent bg-slate-600 py-2 px-4 text-sm font-medium text-white hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"

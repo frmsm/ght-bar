@@ -42,7 +42,7 @@ export default function Items({ bottles }: { bottles: Item[] }) {
     }, []);
 
     return (
-        <div className="flex  flex-wrap  gap-8 justify-center">
+        <div className="flex  flex-wrap  gap-8 justify-center max-w-7xl">
             {bottles?.map((bottle: Item) => {
                 return <Card key={bottle.id.toString()} {...bottle} />;
             })}
